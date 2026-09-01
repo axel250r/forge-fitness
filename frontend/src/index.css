@@ -42,8 +42,8 @@
   --purple:#bf5af2; --mint:#63e6e2; --brown:#ac8e68; --grey:#8e8e93;
 
   /* accent (per-account, synced) */
-  --acc:  var(--green);
-  --acc-2:#248a3d;
+  --acc:  var(--orange);
+  --acc-2:#c76b00;
   --on-acc:#000000;
   --acc-soft: color-mix(in srgb, var(--acc) 16%, transparent);
   --acc-line: color-mix(in srgb, var(--acc) 38%, transparent);
@@ -545,6 +545,28 @@ h4.sec{
    at 180px you had to scroll a full screen between two exercises done back-to-back */
 .exmedia.compact img{height:120px}
 .exmedia.mini img{height:84px}
+.exmedia.ytlink{
+  display:flex;align-items:center;justify-content:center;gap:8px;height:120px;
+  background:var(--acc-soft);color:var(--acc);text-decoration:none;
+  font-size:14px;font-weight:600;position:relative;
+}
+.exmedia.ytlink.compact{height:84px}
+
+.helptip{
+  background:var(--acc-soft);border-radius:var(--r-lg);padding:12px 12px 10px;margin-bottom:14px;
+}
+.helptip-row{display:flex;align-items:flex-start;gap:9px}
+.helptip-i{color:var(--acc);font-size:17px;flex:none;margin-top:1px}
+.helptip-body{flex:1;font-size:13.5px;line-height:1.42;color:var(--label);min-width:0}
+.helptip-x{flex:none;color:var(--label-3);font-size:13px;padding:2px;margin:-2px -2px 0 0}
+.helptip-off{font-size:11.5px;color:var(--label-3);margin:6px 0 0 26px}
+.helptip-link{color:var(--label-2);text-decoration:underline;font-size:11.5px;padding:0}
+.exmedia.ytlink.has-thumb{background:#000}
+.exmedia.ytlink.has-thumb img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85}
+.exmedia.ytlink.has-thumb .ytplay{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:34px;text-shadow:0 1px 6px rgba(0,0,0,.5);
+}
 
 .sethead{
   display:flex;align-items:center;gap:8px;padding:0 0 6px;

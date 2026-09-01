@@ -1,5 +1,6 @@
 import { EXDB } from './exercises-data.js'
 import { t } from './i18n.js'
+import EXERCISE_VIDEOS from './exercise-videos.json'
 
 export { EXDB }
 export const EXIDX = {}
@@ -33,6 +34,26 @@ const IMG_BASE = import.meta.env.VITE_IMG_BASE || 'img/'
 const GIF_BASE = import.meta.env.VITE_GIF_BASE || 'gif/'
 export const imgSrc = ex => IMG_BASE + ex.img
 export const gifSrc = ex => GIF_BASE + ex.gif
+
+// Builds bundling their own paid distribution (VITE_MEDIA_MODE=youtube) skip the upstream
+// exercise photos/GIFs entirely (their license doesn't cover paid apps) and link out to a
+// YouTube search per exercise instead — no image rights to clear, nothing to host.
+export const YOUTUBE_MEDIA = import.meta.env.VITE_MEDIA_MODE === 'youtube'
+export const youtubeSearchUrl = ex =>
+  'https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.n + ' exercise form')
+
+// One specific video per exercise, resolved offline by scripts/match-youtube-videos.mjs
+// (YouTube Data API, ~90/day free quota) — filled in gradually, so most exercises fall
+// back to the plain search link above until their turn comes up.
+export const youtubeVideo = ex => EXERCISE_VIDEOS[ex.id]
+export const youtubeThumbUrl = ex => {
+  const v = youtubeVideo(ex)
+  return v && `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg`
+}
+export const youtubeWatchUrl = ex => {
+  const v = youtubeVideo(ex)
+  return v ? `https://www.youtube.com/watch?v=${v.videoId}` : youtubeSearchUrl(ex)
+}
 
 // Cardio exercises log time + speed instead of weight × reps.
 export const isCardio = idOrEx => (typeof idOrEx === 'string' ? EXIDX[idOrEx] : idOrEx)?.bp === 'cardio'

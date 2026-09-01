@@ -7,7 +7,8 @@ import { lastEntryFor, bestWeightFor, buildSets, effectiveRoutineId, workoutVolu
 import { beep, vibrate } from './lib/sound.js'
 import { t, instrFor, getLang, INSTR_LANGS } from './lib/i18n.js'
 import { nav } from './lib/nav.js'
-import { starterRoutines } from './lib/starter.js'
+import { starterRoutines, STARTER_PLANS } from './lib/starter.js'
+import { isLocked, isStarterPlanLocked } from './lib/paywall.js'
 import Media, { Thumb } from './components/Media.jsx'
 import Stepper from './components/Stepper.jsx'
 import Icon from './components/Icon.jsx'
@@ -43,14 +44,54 @@ export function confirmSheet(opts) {
 }
 
 /* ============================ starter plan ============================ */
-export function loadStarterPlan() {
-  const [push, pull, legs] = starterRoutines()
+function applyStarterPlan(key) {
+  const plan = STARTER_PLANS[key]
+  const { routines, week } = plan.build()
   update(st => {
-    st.routines.push(push, pull, legs)
-    st.week[1] = push.id; st.week[3] = pull.id; st.week[5] = legs.id
+    st.routines.push(...routines)
+    Object.entries(week).forEach(([day, id]) => { st.week[day] = id })
   })
-  toast(t('Starter plan loaded — Mon Push · Wed Pull · Fri Legs'))
+  toast(t('{0} loaded', t(plan.label)))
 }
+
+function StarterPlanPicker({ close }) {
+  return <>
+    <h3>{t('Load starter plan')}</h3>
+    <div className="muted small" style={{ marginBottom: 12 }}>{t('A ready-made week — pick what fits your schedule. You can tweak anything after.')}</div>
+    <div className="list">
+      {Object.entries(STARTER_PLANS).map(([key, plan]) => {
+        const locked = isStarterPlanLocked(key)
+        return <div key={key} className="item" onClick={() => { close(); locked ? paywallSheet() : applyStarterPlan(key) }}>
+          <span className="lrow-i"><Icon name={locked ? 'lock' : 'sparkles'} /></span>
+          <div className="grow"><div className="tt">{t(plan.label)}</div><div className="ss">{t(plan.subtitle)}</div></div>
+          {locked && <span className="tag">{t('Premium')}</span>}
+        </div>
+      })}
+    </div>
+  </>
+}
+export const loadStarterPlan = () => ui().openSheet(close => <StarterPlanPicker close={close} />)
+
+/* ============================ paywall (Forge Premium) ============================ */
+// Billing isn't wired up yet — this is the teaser/upsell UI, ready for the real Play
+// Billing call once the exercise-video catalogue is far enough along to launch it.
+function Paywall({ close }) {
+  return <>
+    <div style={{ textAlign: 'center', padding: '4px 0 6px' }}>
+      <div style={{ fontSize: 40, color: 'var(--acc)' }}><Icon name="crown" /></div>
+      <h3 style={{ marginTop: 8 }}>{t('Unlock Forge Premium')}</h3>
+      <div className="muted small" style={{ margin: '8px 0 4px', lineHeight: 1.5 }}>
+        {t('Full access to the 1,324-exercise library with video demos, every starter plan, and everything still to come.')}
+      </div>
+    </div>
+    <Button variant="primary" icon="crown" onClick={() => { close(); toast(t('Subscriptions aren’t live yet — check back soon.')) }}>
+      {t('Subscribe — $3/month')}
+    </Button>
+    <div style={{ height: 8 }} />
+    <Button variant="ghost" className="dim" onClick={close}>{t('Maybe later')}</Button>
+  </>
+}
+export const paywallSheet = () => ui().openSheet(close => <Paywall close={close} />, { kind: 'center' })
 
 /* ============================ weight picker (shared: body weight + goal) ============================ */
 // Fixed range, not a moving window — a window that resizes itself mid-drag (the previous
@@ -284,24 +325,35 @@ function ExerciseDetail({ ex, close }) {
   const st = useStore(s => s.S)
   const last = lastEntryFor(st, ex.id)
   const best = bestWeightFor(st, ex.id)
+  const locked = isLocked(ex)
   return <>
     <h3 className="capitalize">{ex.n}</h3>
-    <Media ex={ex} />
     <div className="row" style={{ gap: 6, flexWrap: 'wrap', margin: '10px 0' }}>
       <span className="tag acc">{t(ex.bp)}</span>
       {ex.tg && <span className="tag"><Icon name="target" />{t(ex.tg)}</span>}
       <span className="tag"><Icon name="dumbbell" />{t(ex.eq)}</span>
       {(ex.sm || []).slice(0, 3).map((s, i) => <span key={i} className="tag">{t(s)}</span>)}
     </div>
-    {ex.desc && <div className="exnote">{ex.desc}</div>}
-    {best > 0 && <div className="small row" style={{ marginBottom: 6, gap: 5 }}><Icon name="trophy" style={{ fontSize: 14, color: 'var(--yellow)' }} />{t('Best:')} <b className="accent">{fmtNum(best)} {st.unit}</b>{last ? ` · ${t('last')} ${fmtDate(last.d)}: ${last.sets.map(s => setLabel(ex.id, s, last.target)).join(', ')}` : ''}</div>}
-    <Button variant="primary" icon="plus" style={{ margin: '10px 0 4px' }} onClick={() => addToRoutineSheet(ex)}>{t('Add to my plan')}</Button>
-    {ex.custom && <div className="row" style={{ gap: 8, marginTop: 8 }}>
-      <Button icon="pencil" style={{ flex: 1 }} onClick={() => { close(); customExSheet(ex) }}>{t('Edit')}</Button>
-      <Button variant="danger" icon="trash" style={{ flex: 1 }} onClick={() => deleteCustomEx(ex, close)}>{t('Delete')}</Button>
-    </div>}
-    {!isCardio(ex) && <OneRM ex={ex} />}
-    {instrFor(ex).length > 0 &&<><h4 className="sec">{t('How to')}{!INSTR_LANGS.includes(getLang()) && <span className="dim" style={{ textTransform: 'none', letterSpacing: 0 }}> · {t('instructions in English')}</span>}</h4><ol className="steps-list">{instrFor(ex).map((s, i) => <li key={i}>{s}</li>)}</ol></>}
+    {locked ? (
+      <div className="helptip" style={{ marginTop: 4 }}>
+        <div className="helptip-row">
+          <span className="helptip-i"><Icon name="lock" /></span>
+          <div className="helptip-body">{t('This exercise, its demo video and full instructions are part of Forge Premium.')}</div>
+        </div>
+        <Button variant="primary" icon="crown" style={{ marginTop: 10 }} onClick={() => { close(); paywallSheet() }}>{t('Unlock Forge Premium')}</Button>
+      </div>
+    ) : <>
+      <Media ex={ex} />
+      {ex.desc && <div className="exnote">{ex.desc}</div>}
+      {best > 0 && <div className="small row" style={{ marginBottom: 6, gap: 5 }}><Icon name="trophy" style={{ fontSize: 14, color: 'var(--yellow)' }} />{t('Best:')} <b className="accent">{fmtNum(best)} {st.unit}</b>{last ? ` · ${t('last')} ${fmtDate(last.d)}: ${last.sets.map(s => setLabel(ex.id, s, last.target)).join(', ')}` : ''}</div>}
+      <Button variant="primary" icon="plus" style={{ margin: '10px 0 4px' }} onClick={() => addToRoutineSheet(ex)}>{t('Add to my plan')}</Button>
+      {ex.custom && <div className="row" style={{ gap: 8, marginTop: 8 }}>
+        <Button icon="pencil" style={{ flex: 1 }} onClick={() => { close(); customExSheet(ex) }}>{t('Edit')}</Button>
+        <Button variant="danger" icon="trash" style={{ flex: 1 }} onClick={() => deleteCustomEx(ex, close)}>{t('Delete')}</Button>
+      </div>}
+      {!isCardio(ex) && <OneRM ex={ex} />}
+      {instrFor(ex).length > 0 &&<><h4 className="sec">{t('How to')}{!INSTR_LANGS.includes(getLang()) && <span className="dim" style={{ textTransform: 'none', letterSpacing: 0 }}> · {t('instructions in English')}</span>}</h4><ol className="steps-list">{instrFor(ex).map((s, i) => <li key={i}>{s}</li>)}</ol></>}
+    </>}
   </>
 }
 export const exerciseDetailSheet = ex => ui().openSheet(close => <ExerciseDetail ex={ex} close={close} />)
@@ -634,7 +686,7 @@ function PlanTools({ close }) {
   const exportFile = async () => {
     const bundle = buildPlanBundle(st, user?.name ? t('{0}’s plan', user.name) : '')
     const json = JSON.stringify(bundle, null, 2)
-    const name = 'opengym-plan-' + todayISO() + '.json'
+    const name = 'forge-plan-' + todayISO() + '.json'
     if (MOBILE) { try { await shareExport(json, name) } catch (e) { /* dismissed */ } close(); return }
     const blob = new Blob([json], { type: 'application/json' })
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); URL.revokeObjectURL(a.href)
@@ -654,7 +706,7 @@ function PlanTools({ close }) {
     <h3>{t('Share your plan')}</h3>
     <div className="muted small" style={{ marginBottom: 16 }}>{t('Send your routines to a friend, or put your week on paper.')}</div>
     <Button variant="primary" icon="upload" onClick={exportFile} disabled={!hasRoutines}>{t('Export plan file')}</Button>
-    <div className="dim small" style={{ margin: '7px 2px 0', lineHeight: 1.4 }}>{t('A small file a friend imports into their own openGym — routines only, none of your workouts or weigh-ins.')}</div>
+    <div className="dim small" style={{ margin: '7px 2px 0', lineHeight: 1.4 }}>{t('A small file a friend imports into their own Forge — routines only, none of your workouts or weigh-ins.')}</div>
     {!MOBILE && <>
       <div style={{ height: 12 }} />
       <Button variant="tinted" icon="download" onClick={() => { close(); printPlan(st, user?.name || '') }} disabled={!hasRoutines}>{t('Print / Save as PDF')}</Button>

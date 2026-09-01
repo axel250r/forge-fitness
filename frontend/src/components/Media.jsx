@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { imgSrc, gifSrc } from '../lib/exercises.js'
+import { imgSrc, gifSrc, YOUTUBE_MEDIA, youtubeThumbUrl, youtubeWatchUrl } from '../lib/exercises.js'
 import { useStore } from '../store/useStore.js'
 import { t } from '../lib/i18n.js'
 import Icon from './Icon.jsx'
@@ -13,6 +13,25 @@ export default function Media({ ex, id, compact, minimizable }) {
   const [playing, setPlaying] = useState(true)
   const gifSize = useStore(s => s.S.gifSize)
   const update = useStore(s => s.update)
+  if (YOUTUBE_MEDIA) {
+    const thumb = youtubeThumbUrl(ex)
+    // A dead thumbnail (offline, or the video's gone) falls back to the plain search-link
+    // card instead of the browser's broken-image icon.
+    const [thumbFailed, setThumbFailed] = useState(false)
+    const showThumb = thumb && !thumbFailed
+    return (
+      <a
+        className={'exmedia ytlink' + (compact ? ' compact' : '') + (showThumb ? ' has-thumb' : '')}
+        id={id}
+        href={youtubeWatchUrl(ex)}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {showThumb && <img decoding="async" src={thumb} alt="" onError={() => setThumbFailed(true)} />}
+        <span className="ytplay"><Icon name="play" />{!showThumb && t('Watch demo on YouTube')}</span>
+      </a>
+    )
+  }
   if (!ex.gif) return null
   const mini = minimizable && gifSize === 'mini'
   const toggleSize = e => { e.stopPropagation(); update(s => { s.gifSize = mini ? 'full' : 'mini' }) }
@@ -34,6 +53,12 @@ export default function Media({ ex, id, compact, minimizable }) {
 }
 
 export function Thumb({ ex }) {
-  if (!ex.img) return <div className="thumb thumb-x"><Icon name="dumbbell" /></div>
-  return <img className="thumb" loading="lazy" decoding="async" src={imgSrc(ex)} alt="" />
+  const [failed, setFailed] = useState(false)
+  if (YOUTUBE_MEDIA) {
+    const thumb = youtubeThumbUrl(ex)
+    if (thumb && !failed) return <img className="thumb" loading="lazy" decoding="async" src={thumb} alt="" onError={() => setFailed(true)} />
+    return <div className="thumb thumb-x"><Icon name="dumbbell" /></div>
+  }
+  if (!ex.img || failed) return <div className="thumb thumb-x"><Icon name="dumbbell" /></div>
+  return <img className="thumb" loading="lazy" decoding="async" src={imgSrc(ex)} alt="" onError={() => setFailed(true)} />
 }
