@@ -1,5 +1,6 @@
 // Russian UI strings. Keys are the English source strings (see lib/i18n.js).
 export default {
+  "This exercise is part of Forge Premium — skip it or unlock full access to train it.": "Это упражнение входит в Forge Premium — пропусти его или открой полный доступ, чтобы выполнить.",
   "Plate calculator": "Калькулятор блинов",
   "Total weight on the bar, including the bar itself.": "Общий вес на штанге, включая саму штангу.",
   "Bar weight": "Вес штанги",

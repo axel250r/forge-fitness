@@ -1,5 +1,6 @@
 // Simplified Chinese UI strings. Keys are the English source strings (see lib/i18n.js).
 export default {
+  "This exercise is part of Forge Premium — skip it or unlock full access to train it.": "这个动作属于 Forge 高级版——跳过它，或解锁完整权限来训练它。",
   "Plate calculator": "杠铃片计算器",
   "Total weight on the bar, including the bar itself.": "杠铃上的总重量（含杠铃本身）。",
   "Bar weight": "杠铃重量",

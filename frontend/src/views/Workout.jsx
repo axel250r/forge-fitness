@@ -9,8 +9,9 @@ import { beep, vibrate } from '../lib/sound.js'
 import { t } from '../lib/i18n.js'
 import { api } from '../lib/api.js'
 import Media from '../components/Media.jsx'
-import { startFlow, exercisePicker, exConfigSheet, exerciseDetailSheet, topWeightSheet, finishWorkout, workoutCompleteSheet, confirmSheet, plateCalcSheet } from '../sheets.jsx'
+import { startFlow, exercisePicker, exConfigSheet, exerciseDetailSheet, topWeightSheet, finishWorkout, workoutCompleteSheet, confirmSheet, plateCalcSheet, paywallSheet } from '../sheets.jsx'
 import { isPlateLoaded } from '../lib/plates.js'
+import { isLocked } from '../lib/paywall.js'
 import Icon from '../components/Icon.jsx'
 import { Button, Check, NumberField } from '../components/ui.jsx'
 import { nextPrescription, applyPrescription } from '../lib/progression.js'
@@ -62,6 +63,16 @@ function ExerciseBlock({ entryIdx, compact, onToggle, onField, onAddSet, onRemov
   const working = useUI(s => s.work)
   const entry = S.active.entries[entryIdx]
   const ex = exOr(entry.id)
+  // Last line of defence for the free tier: the library and starter plans already keep a
+  // locked exercise out of a routine, but an imported plan file, a restored backup or an
+  // import from another app can still land one in `entries` directly. Whatever the route,
+  // nothing locked is ever actually trainable here.
+  if (isLocked(ex)) return <div className="card" style={{ textAlign: 'center', padding: '18px 16px' }}>
+    <div style={{ fontSize: 28, color: 'var(--acc)', marginBottom: 6 }}><Icon name="lock" /></div>
+    <div style={{ fontWeight: 600, marginBottom: 4 }} className="capitalize">{ex.n}</div>
+    <div className="muted small" style={{ marginBottom: 12 }}>{t('This exercise is part of Forge Premium — skip it or unlock full access to train it.')}</div>
+    <Button variant="primary" icon="crown" onClick={() => paywallSheet()}>{t('Unlock Forge Premium')}</Button>
+  </div>
   const mode = modeOf({ ...(entry.target || {}), id: entry.id })
   const cardio = mode === 'cardio'
   const timed = mode === 'time'

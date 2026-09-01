@@ -1,5 +1,6 @@
 // Turkish UI strings. Keys are the English source strings (see lib/i18n.js).
 export default {
+  "This exercise is part of Forge Premium — skip it or unlock full access to train it.": "Bu egzersiz Forge Premium'un bir parçası — atla ya da yapmak için tam erişimin kilidini aç.",
   "Plate calculator": "Disk hesaplayıcı",
   "Total weight on the bar, including the bar itself.": "Bar dahil, bardaki toplam ağırlık.",
   "Bar weight": "Bar ağırlığı",

@@ -1,5 +1,6 @@
 // Hindi UI strings. Keys are the English source strings (see lib/i18n.js).
 export default {
+  "This exercise is part of Forge Premium — skip it or unlock full access to train it.": "यह व्यायाम Forge Premium का हिस्सा है — इसे छोड़ें या इसे करने के लिए पूरी पहुँच अनलॉक करें।",
   "Plate calculator": "प्लेट कैलकुलेटर",
   "Total weight on the bar, including the bar itself.": "बार सहित, बार पर कुल वज़न।",
   "Bar weight": "बार का वज़न",

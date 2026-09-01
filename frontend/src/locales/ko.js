@@ -1,5 +1,6 @@
 // Korean UI strings. Keys are the English source strings (see lib/i18n.js).
 export default {
+  "This exercise is part of Forge Premium — skip it or unlock full access to train it.": "이 운동은 Forge 프리미엄에 포함되어 있어요 — 건너뛰거나 전체 이용권을 잠금 해제해서 훈련하세요.",
   "Plate calculator": "원판 계산기",
   "Total weight on the bar, including the bar itself.": "바 자체를 포함한 바벨의 총 무게예요.",
   "Bar weight": "바 무게",

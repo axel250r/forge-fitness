@@ -1,5 +1,6 @@
 // Polish UI strings. Keys are the English source strings (see lib/i18n.js).
 export default {
+  "This exercise is part of Forge Premium — skip it or unlock full access to train it.": "To ćwiczenie jest częścią Forge Premium — pomiń je albo odblokuj pełny dostęp, aby je wykonać.",
   "Plate calculator": "Kalkulator obciążenia",
   "Total weight on the bar, including the bar itself.": "Całkowity ciężar na sztandze, licząc samą sztangę.",
   "Bar weight": "Waga sztangi",
