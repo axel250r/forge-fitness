@@ -9,10 +9,11 @@ import { t, instrFor, getLang, INSTR_LANGS } from './lib/i18n.js'
 import { nav } from './lib/nav.js'
 import { starterRoutines, STARTER_PLANS } from './lib/starter.js'
 import { isLocked, isStarterPlanLocked } from './lib/paywall.js'
+import { platesFor, DEFAULT_BAR } from './lib/plates.js'
 import Media, { Thumb } from './components/Media.jsx'
 import Stepper from './components/Stepper.jsx'
 import Icon from './components/Icon.jsx'
-import { Button, Slider, Switch, Segmented, SelectRow, Row } from './components/ui.jsx'
+import { Button, Slider, Switch, Segmented, SelectRow, Row, NumberField } from './components/ui.jsx'
 import { glyphOf, GLYPH_GROUPS, DEFAULT_GLYPH } from './lib/glyphs.js'
 import BodyMap from './components/BodyMap.jsx'
 import { loadOfWorkouts } from './lib/muscles.js'
@@ -92,6 +93,43 @@ function Paywall({ close }) {
   </>
 }
 export const paywallSheet = () => ui().openSheet(close => <Paywall close={close} />, { kind: 'center' })
+
+/* ============================ plate calculator ============================ */
+// What to load per side for a target total — greedy from the biggest plate down, the way
+// anyone loads a bar by hand. Bar weight defaults per unit and is editable (short bars,
+// women's bars, trap bars all vary), and is remembered per profile once changed.
+function PlateCalc({ startWeight, close }) {
+  const st = useStore(s => s.S)
+  const unit = st.unit
+  const [w, setW] = useState(startWeight || 60)
+  const [bar, setBar] = useState(st.barWeight ?? DEFAULT_BAR[unit] ?? DEFAULT_BAR.kg)
+  const setBarPersist = v => { setBar(v); update(s => { s.barWeight = v }) }
+  const { perSide, plates, remainder } = platesFor(w, bar, unit)
+  return <>
+    <h3>{t('Plate calculator')}</h3>
+    <div className="muted small" style={{ marginBottom: 12 }}>{t('Total weight on the bar, including the bar itself.')}</div>
+    <WeightInput value={w} setValue={setW} unit={unit} />
+    <div style={{ height: 14 }} />
+    <div className="row between" style={{ marginBottom: 4 }}>
+      <span className="lrow-t">{t('Bar weight')}</span>
+      <div className="stp w" style={{ width: 150 }}>
+        <button aria-label="Decrease" onClick={() => setBarPersist(Math.max(0, Math.round((bar - (unit === 'kg' ? 2.5 : 5)) * 10) / 10))}><Icon name="minus" /></button>
+        <span className="val"><NumberField decimal value={bar} onChange={setBarPersist} /></span>
+        <button aria-label="Increase" onClick={() => setBarPersist(Math.round((bar + (unit === 'kg' ? 2.5 : 5)) * 10) / 10)}><Icon name="plus" /></button>
+      </div>
+    </div>
+    <div className="card" style={{ marginTop: 14 }}>
+      {plates.length ? <>
+        <div className="muted small" style={{ marginBottom: 8 }}>{t('Per side ({0} {1}):', fmtNum(perSide), unit)}</div>
+        <div className="row" style={{ gap: 8, flexWrap: 'wrap' }}>
+          {plates.map(p => <span key={p.plate} className="tag acc nocap" style={{ fontSize: 14 }}>{fmtNum(p.plate)} {unit} × {p.count}</span>)}
+        </div>
+        {remainder > 0 && <div className="small dim" style={{ marginTop: 8 }}>{t('{0} {1} short per side — no combination of your plates hits it exactly.', fmtNum(remainder), unit)}</div>}
+      </> : <div className="muted small">{t('The bar alone already covers this weight.')}</div>}
+    </div>
+  </>
+}
+export const plateCalcSheet = startWeight => ui().openSheet(close => <PlateCalc startWeight={startWeight} close={close} />)
 
 /* ============================ weight picker (shared: body weight + goal) ============================ */
 // Fixed range, not a moving window — a window that resizes itself mid-drag (the previous

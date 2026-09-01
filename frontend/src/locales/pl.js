@@ -1,5 +1,11 @@
 // Polish UI strings. Keys are the English source strings (see lib/i18n.js).
 export default {
+  "Plate calculator": "Kalkulator obciążenia",
+  "Total weight on the bar, including the bar itself.": "Całkowity ciężar na sztandze, licząc samą sztangę.",
+  "Bar weight": "Waga sztangi",
+  "Per side ({0} {1}):": "Na stronę ({0} {1}):",
+  "{0} {1} short per side — no combination of your plates hits it exactly.": "Brakuje {0} {1} na stronę — żadna kombinacja twoich talerzy nie da dokładnego wyniku.",
+  "The bar alone already covers this weight.": "Sama sztanga już pokrywa ten ciężar.",
   "This exercise, its demo video and full instructions are part of Forge Premium.": "To ćwiczenie, jego wideo demonstracyjne i pełne instrukcje są częścią Forge Premium.",
   "Unlock Forge Premium": "Odblokuj Forge Premium",
   "Full access to the 1,324-exercise library with video demos, every starter plan, and everything still to come.": "Pełny dostęp do biblioteki 1324 ćwiczeń z wideo demonstracyjnym, wszystkich planów startowych i wszystkiego, co jeszcze nadejdzie.",

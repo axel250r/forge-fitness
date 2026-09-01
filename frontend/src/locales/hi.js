@@ -1,5 +1,11 @@
 // Hindi UI strings. Keys are the English source strings (see lib/i18n.js).
 export default {
+  "Plate calculator": "प्लेट कैलकुलेटर",
+  "Total weight on the bar, including the bar itself.": "बार सहित, बार पर कुल वज़न।",
+  "Bar weight": "बार का वज़न",
+  "Per side ({0} {1}):": "हर तरफ ({0} {1}):",
+  "{0} {1} short per side — no combination of your plates hits it exactly.": "हर तरफ {0} {1} कम है — आपकी प्लेटों का कोई भी संयोजन ठीक इतना नहीं बैठता।",
+  "The bar alone already covers this weight.": "सिर्फ़ बार ही इतना वज़न पूरा कर देता है।",
   "This exercise, its demo video and full instructions are part of Forge Premium.": "यह व्यायाम, इसका डेमो वीडियो और पूरे निर्देश Forge Premium का हिस्सा हैं।",
   "Unlock Forge Premium": "Forge Premium अनलॉक करें",
   "Full access to the 1,324-exercise library with video demos, every starter plan, and everything still to come.": "डेमो वीडियो के साथ 1,324 व्यायामों की पूरी लाइब्रेरी, हर स्टार्टर प्लान, और आगे आने वाली हर चीज़ तक पूरी पहुँच।",

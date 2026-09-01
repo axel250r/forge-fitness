@@ -1,5 +1,11 @@
 // Turkish UI strings. Keys are the English source strings (see lib/i18n.js).
 export default {
+  "Plate calculator": "Disk hesaplayıcı",
+  "Total weight on the bar, including the bar itself.": "Bar dahil, bardaki toplam ağırlık.",
+  "Bar weight": "Bar ağırlığı",
+  "Per side ({0} {1}):": "Taraf başına ({0} {1}):",
+  "{0} {1} short per side — no combination of your plates hits it exactly.": "Taraf başına {0} {1} eksik — disklerinin hiçbir kombinasyonu tam tutmuyor.",
+  "The bar alone already covers this weight.": "Yalnızca bar bile bu ağırlığı zaten karşılıyor.",
   "This exercise, its demo video and full instructions are part of Forge Premium.": "Bu egzersiz, tanıtım videosu ve tam talimatlar Forge Premium'un bir parçasıdır.",
   "Unlock Forge Premium": "Forge Premium'un kilidini aç",
   "Full access to the 1,324-exercise library with video demos, every starter plan, and everything still to come.": "1.324 egzersizlik kütüphaneye tanıtım videolarıyla tam erişim, tüm başlangıç planları ve gelecek her şey.",

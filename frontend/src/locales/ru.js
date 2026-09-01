@@ -1,5 +1,11 @@
 // Russian UI strings. Keys are the English source strings (see lib/i18n.js).
 export default {
+  "Plate calculator": "Калькулятор блинов",
+  "Total weight on the bar, including the bar itself.": "Общий вес на штанге, включая саму штангу.",
+  "Bar weight": "Вес штанги",
+  "Per side ({0} {1}):": "На сторону ({0} {1}):",
+  "{0} {1} short per side — no combination of your plates hits it exactly.": "Не хватает {0} {1} на сторону — ни одна комбинация твоих блинов не даёт точный вес.",
+  "The bar alone already covers this weight.": "Одна штанга уже покрывает этот вес.",
   "This exercise, its demo video and full instructions are part of Forge Premium.": "Это упражнение, его видео-демонстрация и полная инструкция входят в Forge Premium.",
   "Unlock Forge Premium": "Открыть Forge Premium",
   "Full access to the 1,324-exercise library with video demos, every starter plan, and everything still to come.": "Полный доступ к библиотеке из 1324 упражнений с видео-демонстрациями, всем стартовым планам и всему, что появится позже.",

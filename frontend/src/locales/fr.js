@@ -1,5 +1,11 @@
 // French UI strings. Keys are the English source strings (see lib/i18n.js).
 export default {
+  "Plate calculator": "Calculateur de disques",
+  "Total weight on the bar, including the bar itself.": "Poids total sur la barre, barre comprise.",
+  "Bar weight": "Poids de la barre",
+  "Per side ({0} {1}):": "Par côté ({0} {1}) :",
+  "{0} {1} short per side — no combination of your plates hits it exactly.": "Il manque {0} {1} par côté — aucune combinaison de tes disques ne tombe juste.",
+  "The bar alone already covers this weight.": "La barre seule couvre déjà ce poids.",
   "This exercise, its demo video and full instructions are part of Forge Premium.": "Cet exercice, sa vidéo de démonstration et les instructions complètes font partie de Forge Premium.",
   "Unlock Forge Premium": "Débloquer Forge Premium",
   "Full access to the 1,324-exercise library with video demos, every starter plan, and everything still to come.": "Accès complet à la bibliothèque de 1 324 exercices avec vidéos de démonstration, tous les plans de départ, et tout ce qui arrive encore.",

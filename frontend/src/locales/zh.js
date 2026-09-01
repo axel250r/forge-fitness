@@ -1,5 +1,11 @@
 // Simplified Chinese UI strings. Keys are the English source strings (see lib/i18n.js).
 export default {
+  "Plate calculator": "杠铃片计算器",
+  "Total weight on the bar, including the bar itself.": "杠铃上的总重量（含杠铃本身）。",
+  "Bar weight": "杠铃重量",
+  "Per side ({0} {1}):": "每侧（{0} {1}）：",
+  "{0} {1} short per side — no combination of your plates hits it exactly.": "每侧还差 {0} {1} — 你现有的杠铃片组合无法精确凑出这个重量。",
+  "The bar alone already covers this weight.": "仅杠铃本身就已经达到这个重量。",
   "This exercise, its demo video and full instructions are part of Forge Premium.": "这个动作及其演示视频和完整说明都属于 Forge 高级版。",
   "Unlock Forge Premium": "解锁 Forge 高级版",
   "Full access to the 1,324-exercise library with video demos, every starter plan, and everything still to come.": "完整访问包含 1,324 个动作及演示视频的题库、全部入门计划，以及未来的所有更新。",

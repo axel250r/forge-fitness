@@ -1,5 +1,11 @@
 // Korean UI strings. Keys are the English source strings (see lib/i18n.js).
 export default {
+  "Plate calculator": "원판 계산기",
+  "Total weight on the bar, including the bar itself.": "바 자체를 포함한 바벨의 총 무게예요.",
+  "Bar weight": "바 무게",
+  "Per side ({0} {1}):": "한쪽당 ({0} {1}):",
+  "{0} {1} short per side — no combination of your plates hits it exactly.": "한쪽당 {0} {1}이 부족해요 — 가지고 있는 원판 조합으로는 정확히 맞출 수 없어요.",
+  "The bar alone already covers this weight.": "바만으로 이미 이 무게를 채워요.",
   "This exercise, its demo video and full instructions are part of Forge Premium.": "이 운동과 시범 영상, 전체 설명은 Forge 프리미엄에 포함되어 있어요.",
   "Unlock Forge Premium": "Forge 프리미엄 잠금 해제",
   "Full access to the 1,324-exercise library with video demos, every starter plan, and everything still to come.": "1,324개 동작 라이브러리 전체와 시범 영상, 모든 스타터 플랜, 앞으로 추가될 모든 기능을 이용하세요.",
