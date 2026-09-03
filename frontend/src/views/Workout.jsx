@@ -11,7 +11,8 @@ import { api } from '../lib/api.js'
 import Media from '../components/Media.jsx'
 import { startFlow, exercisePicker, exConfigSheet, exerciseDetailSheet, topWeightSheet, finishWorkout, workoutCompleteSheet, confirmSheet, plateCalcSheet, paywallSheet } from '../sheets.jsx'
 import { isPlateLoaded } from '../lib/plates.js'
-import { isLocked } from '../lib/paywall.js'
+import { isLocked, isQuickSessionLocked } from '../lib/paywall.js'
+import { QUICK_SESSIONS, quickSessionUrl, quickSessionThumb } from '../lib/quick-sessions.js'
 import Icon from '../components/Icon.jsx'
 import { Button, Check, NumberField } from '../components/ui.jsx'
 import { nextPrescription, applyPrescription } from '../lib/progression.js'
@@ -41,6 +42,18 @@ function StartChooser() {
         <span className="lrow-i"><Icon name={glyphOf(r.emoji)} /></span>
         <div className="grow"><div className="tt">{r.name}</div><div className="ss">{exCount(r.ex.length)}</div></div>
         <span className="tag acc">{t('Start')}</span></div>)}</div></>}
+    {QUICK_SESSIONS.length > 0 && <><h4 className="sec">{t('Short on time')}</h4>
+      <div className="list">{QUICK_SESSIONS.map(s => {
+        const locked = isQuickSessionLocked(s)
+        const row = <>
+          <img className="thumb" loading="lazy" decoding="async" src={quickSessionThumb(s)} alt="" />
+          <div className="grow"><div className="tt">{t(s.focus)}</div><div className="ss">{t('{0} min · Follow along on YouTube', s.minutes)}</div></div>
+          <Icon name={locked ? 'lock' : 'play'} className="chev" />
+        </>
+        return locked
+          ? <div key={s.id} className="item" onClick={() => paywallSheet()}>{row}</div>
+          : <a key={s.id} className="item" href={quickSessionUrl(s)} target="_blank" rel="noopener noreferrer">{row}</a>
+      })}</div></>}
     <div style={{ height: 14 }} />
     <Button icon="shuffle" onClick={() => startFlow(null)}>{t('Freestyle workout (pick as you go)')}</Button>
     {!S.routines.length && <><div style={{ height: 10 }} /><Button variant="primary" onClick={() => nav('/plan')}>{t('Build a plan first')}</Button></>}

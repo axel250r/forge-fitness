@@ -33,3 +33,7 @@ export const isLocked = ex => !isFreeExercise(ex)
 // but locked — loading one shows the paywall instead.
 export const FREE_STARTER_PLANS = new Set(['fullBody'])
 export const isStarterPlanLocked = key => YOUTUBE_MEDIA && !FREE_STARTER_PLANS.has(key)
+
+// Quick Sessions (lib/quick-sessions.js) carry their own `free` flag straight from the curated
+// list — same gate shape as an exercise, just sourced differently.
+export const isQuickSessionLocked = s => YOUTUBE_MEDIA && !s.free
