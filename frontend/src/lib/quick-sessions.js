@@ -16,6 +16,14 @@ const SESSIONS = [
   { id: 'lower-body-20', focus: 'Lower Body', minutes: 20, free: false },
   { id: 'full-body-30', focus: 'Full Body', minutes: 30, free: false },
   { id: 'low-impact-cardio-30', focus: 'Cardio', minutes: 30, free: false },
+  { id: 'back-shoulders-20', focus: 'Upper Body', minutes: 20, free: false },
+  { id: 'glutes-15', focus: 'Lower Body', minutes: 15, free: false },
+  { id: 'chest-triceps-20', focus: 'Upper Body', minutes: 10, free: false },
+  { id: 'full-body-beginner-15', focus: 'Full Body', minutes: 15, free: false },
+  { id: 'bedtime-stretch-10', focus: 'Mobility', minutes: 10, free: false },
+  { id: 'plyo-cardio-20', focus: 'Cardio', minutes: 20, free: false },
+  { id: 'pilates-core-20', focus: 'Abs', minutes: 20, free: false },
+  { id: 'dumbbell-full-body-30', focus: 'Full Body', minutes: 30, free: false },
 ]
 
 // Merge in the resolved video — and drop anything the script hasn't resolved yet, rather than

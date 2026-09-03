@@ -27,6 +27,13 @@ const FIVE_BY_FIVE = [
   ['Workout B', 'barbell', [['0043', 5, 5], ['0091', 5, 5], ['0032', 1, 5]]]
 ]
 
+// Bodyweight + dumbbell only — no bar, cable, or machine, so it fits the "At home" filter
+// (lib/exercises.js isHomeFriendly) exactly. One push, one squat, one pull, one press, one
+// glute/hip hinge, one core move: the same full-body template as FULL_BODY above.
+const HOME_FULL_BODY = [
+  ['Full Body (Home)', 'dumbbell', [['0662', 3, 12], ['1760', 3, 12], ['0293', 3, 10], ['0426', 3, 10], ['3561', 3, 15], ['0274', 3, 15]]]
+]
+
 export const STARTER_PLANS = {
   ppl: {
     label: 'Push / Pull / Legs',
@@ -58,6 +65,14 @@ export const STARTER_PLANS = {
     build() {
       const [a, b] = build(FIVE_BY_FIVE)
       return { routines: [a, b], week: { 1: a.id, 3: b.id, 5: a.id } }
+    }
+  },
+  home: {
+    label: 'At home', // same key as the Library Gym/At home toggle — one translation, reused
+    subtitle: '3x/week · bodyweight + dumbbells · Mon · Wed · Fri',
+    build() {
+      const [full] = build(HOME_FULL_BODY)
+      return { routines: [full], week: { 1: full.id, 3: full.id, 5: full.id } }
     }
   }
 }

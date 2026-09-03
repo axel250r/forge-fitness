@@ -27,6 +27,14 @@ export const SESSIONS = [
   { id: 'lower-body-20', query: '20 minute lower body workout no equipment', videoDuration: 'medium' },
   { id: 'full-body-30', query: '30 minute full body workout for beginners no equipment', videoDuration: 'long' },
   { id: 'low-impact-cardio-30', query: '30 minute low impact cardio workout no jumping', videoDuration: 'long' },
+  { id: 'back-shoulders-20', query: '20 minute back and shoulders workout no equipment', videoDuration: 'medium' },
+  { id: 'glutes-15', query: '15 minute glutes workout no equipment', videoDuration: 'medium' },
+  { id: 'chest-triceps-20', query: '20 minute chest and triceps workout no equipment', videoDuration: 'medium' },
+  { id: 'full-body-beginner-15', query: '15 minute full body workout for absolute beginners', videoDuration: 'medium' },
+  { id: 'bedtime-stretch-10', query: '10 minute bedtime stretch routine for flexibility', videoDuration: 'medium' },
+  { id: 'plyo-cardio-20', query: '20 minute plyometric jump workout no equipment', videoDuration: 'medium' },
+  { id: 'pilates-core-20', query: '20 minute pilates core workout no equipment', videoDuration: 'medium' },
+  { id: 'dumbbell-full-body-30', query: '30 minute dumbbell full body workout at home', videoDuration: 'long' },
 ]
 
 let resolved = {}
