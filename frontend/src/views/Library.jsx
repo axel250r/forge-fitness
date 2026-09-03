@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useStore } from '../store/useStore.js'
-import { EXDB, BODYPARTS, allExercises, equipmentOf, YOUTUBE_MEDIA } from '../lib/exercises.js'
+import { EXDB, BODYPARTS, allExercises, equipmentOf, isHomeFriendly, YOUTUBE_MEDIA } from '../lib/exercises.js'
 import { bestWeightFor } from '../lib/history.js'
 import { fmtNum } from '../lib/format.js'
 import { t } from '../lib/i18n.js'
@@ -8,25 +8,31 @@ import { Thumb } from '../components/Media.jsx'
 import { exerciseDetailSheet, addToRoutineSheet, customExSheet, paywallSheet } from '../sheets.jsx'
 import { isLocked } from '../lib/paywall.js'
 import Icon from '../components/Icon.jsx'
-import { Button } from '../components/ui.jsx'
+import { Button, Segmented } from '../components/ui.jsx'
 import HelpTip from '../components/HelpTip.jsx'
 
 export default function Library() {
   const S = useStore(s => s.S)
+  const update = useStore(s => s.update)
   const [q, setQ] = useState('')
   const [bp, setBp] = useState('')
   const [eq, setEq] = useState('')
   const [shown, setShown] = useState(40)
   const ql = q.toLowerCase().trim()
-  const base = allExercises(S).filter(e => (!bp || e.bp === bp) && (!ql || e.n.toLowerCase().includes(ql) || e.tg.includes(ql) || e.eq.includes(ql) || (e.desc || '').toLowerCase().includes(ql)))
+  const atHome = S.place === 'home'
+  const all = allExercises(S)
+  const base = all.filter(e => (!bp || e.bp === bp) && (!atHome || isHomeFriendly(e)) && (!ql || e.n.toLowerCase().includes(ql) || e.tg.includes(ql) || e.eq.includes(ql) || (e.desc || '').toLowerCase().includes(ql)))
   const eqOpts = equipmentOf(base)
   // Drop the equipment filter if the search narrowed it away, so you never hit a dead end.
   const eqOn = eqOpts.includes(eq) ? eq : ''
   const f = eqOn ? base.filter(e => e.eq === eqOn) : base
 
   return <>
-    <div className="hdr"><div><h1>{t('Exercises')}</h1><div className="sub">{t(YOUTUBE_MEDIA ? '{0} exercises with YouTube demos' : '{0} exercises with animations', EXDB.length)}</div></div></div>
-    <HelpTip id="library" text="Search or filter by body part and equipment. Tap an exercise for its full instructions and demo video, or Plan to add it straight to a routine." />
+    <div className="hdr"><div><h1>{t('Exercises')}</h1><div className="sub">{t(YOUTUBE_MEDIA ? '{0} exercises with YouTube demos' : '{0} exercises with animations', atHome ? all.filter(isHomeFriendly).length : EXDB.length)}</div></div></div>
+    <HelpTip id="library" text="Search or filter by body part and equipment. Switch Gym / At home to only see exercises you can actually do there. Tap an exercise for its full instructions and demo video, or Plan to add it straight to a routine." />
+    <div style={{ marginBottom: 12 }}><Segmented className="seg-inline"
+      options={[{ value: 'gym', label: t('Gym') }, { value: 'home', label: t('At home') }]}
+      value={S.place} onChange={v => update(s => { s.place = v })} /></div>
     <div className="search" style={{ marginBottom: 10 }}><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
       <input className="input" placeholder={t('Search…')} value={q} onChange={e => { setQ(e.target.value); setShown(40) }} /></div>
     <div className="chips" style={{ marginBottom: eqOpts.length > 1 ? 8 : 12 }}>

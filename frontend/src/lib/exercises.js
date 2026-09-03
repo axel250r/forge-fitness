@@ -65,6 +65,18 @@ export const isCardio = idOrEx => (typeof idOrEx === 'string' ? EXIDX[idOrEx] : 
 export const isBodyweightEq = idOrEx =>
   (typeof idOrEx === 'string' ? EXIDX[idOrEx] : idOrEx)?.eq === 'body weight'
 
+// Equipment realistically found in a home setup — bodyweight plus the compact gear people
+// actually buy for a spare room (dumbbells, kettlebells, bands, a stability/bosu ball...).
+// Everything else (cable towers, barbells + racks, leverage/smith machines, sleds...) needs
+// a gym. This only narrows what's shown for "At home" — a dumbbell exercise still shows up
+// under Gym too, since a gym has all of that and more.
+const HOME_EQUIPMENT = new Set([
+  'body weight', 'dumbbell', 'kettlebell', 'band', 'resistance band',
+  'stability ball', 'bosu ball', 'medicine ball', 'roller', 'wheel roller'
+])
+export const isHomeFriendly = idOrEx =>
+  HOME_EQUIPMENT.has((typeof idOrEx === 'string' ? EXIDX[idOrEx] : idOrEx)?.eq)
+
 // An id that resolves to nothing — a plan file built against a different exercise dataset,
 // a custom exercise deleted on another device before the sync arrived — still has to
 // render. A placeholder keeps it visible (and removable) instead of taking the whole view
