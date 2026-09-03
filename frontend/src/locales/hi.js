@@ -235,6 +235,7 @@ export default {
   '“{0}” and its exercises will be removed.': '"{0}" और उसके व्यायाम हटा दिए जाएँगे।',
   'Delete routine': 'रूटीन हटाएँ',
   '{0} exercises with animations': 'एनिमेशन के साथ {0} व्यायाम',
+  '{0} exercises with YouTube demos': "{0} व्यायाम, YouTube डेमो के साथ",
   'Search…': 'खोजें…',
   'No workouts yet.': 'अभी कोई वर्कआउट नहीं।',
   'Starter plan loaded — Mon Push · Wed Pull · Fri Legs': 'स्टार्टर प्लान लोड हुआ — सोम पुश · बुध पुल · शुक्र लेग्स',
@@ -585,4 +586,10 @@ export default {
   '{0} sets of {1} — time to add weight or move to a harder variation.': '{1} रेप्स के {0} सेट — अब वज़न बढ़ाने या किसी कठिन वैरिएशन पर जाने का समय।',
   '{0} per side': 'प्रति तरफ़ {0}',
   'You still log the total: {0} is {1} per side.': 'आप कुल ही दर्ज करते हैं: {0} यानी प्रति तरफ़ {1}।',
+  "Reload Forge": "Forge फिर से लोड करें",
+  "Watch demo on YouTube": "YouTube पर डेमो देखें",
+  "No exercises yet.": "अभी तक कोई व्यायाम नहीं है।",
+  "{0} loaded": "{0} लोड हुआ",
+  "A ready-made week — pick what fits your schedule. You can tweak anything after.": "पहले से तैयार सप्ताह — जो आपके समय के अनुसार हो उसे चुनें। बाद में कुछ भी बदल सकते हैं।",
+  "Exercise": "व्यायाम",
 }

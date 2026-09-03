@@ -235,6 +235,7 @@ export default {
   '“{0}” and its exercises will be removed.': '"{0}"과(와) 그 운동들이 삭제됩니다.',
   'Delete routine': '루틴 삭제',
   '{0} exercises with animations': '애니메이션이 있는 운동 {0}개',
+  '{0} exercises with YouTube demos': "유튜브 시연 영상이 있는 운동 {0}개",
   'Search…': '검색…',
   'No workouts yet.': '아직 운동 기록이 없어요.',
   'Starter plan loaded — Mon Push · Wed Pull · Fri Legs': '스타터 계획 불러옴 — 월 푸시 · 수 풀 · 금 레그',
@@ -585,4 +586,10 @@ export default {
   '{0} sets of {1} — time to add weight or move to a harder variation.': '{1}회 {0}세트 — 이제 무게를 올리거나 더 어려운 동작으로 넘어가세요.',
   '{0} per side': '한쪽당 {0}회',
   'You still log the total: {0} is {1} per side.': '기록은 그대로 합계로 합니다: {0}회는 한쪽당 {1}회입니다.',
+  "Reload Forge": "Forge 다시 불러오기",
+  "Watch demo on YouTube": "유튜브에서 시연 영상 보기",
+  "No exercises yet.": "아직 운동이 없습니다.",
+  "{0} loaded": "{0} 불러옴",
+  "A ready-made week — pick what fits your schedule. You can tweak anything after.": "미리 짜인 한 주 — 일정에 맞는 것을 선택하세요. 나중에 얼마든지 조정할 수 있습니다.",
+  "Exercise": "운동",
 }

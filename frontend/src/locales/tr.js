@@ -235,6 +235,7 @@ export default {
   '“{0}” and its exercises will be removed.': '“{0}” ve egzersizleri kaldırılacak.',
   'Delete routine': 'Rutini sil',
   '{0} exercises with animations': 'animasyonlu {0} egzersiz',
+  '{0} exercises with YouTube demos': "{0} egzersiz, YouTube demolarıyla",
   'Search…': 'Ara…',
   'No workouts yet.': 'Henüz antrenman yok.',
   'Starter plan loaded — Mon Push · Wed Pull · Fri Legs': 'Başlangıç planı yüklendi — Pzt Push · Çar Pull · Cum Bacak',
@@ -585,4 +586,10 @@ export default {
   '{0} sets of {1} — time to add weight or move to a harder variation.': '{1} tekrarlık {0} set — ağırlık ekleme ya da daha zor bir varyasyona geçme zamanı.',
   '{0} per side': 'Taraf başına {0}',
   'You still log the total: {0} is {1} per side.': 'Toplamı kaydetmeye devam ediyorsun: {0}, taraf başına {1} demek.',
+  "Reload Forge": "Forge'u yeniden yükle",
+  "Watch demo on YouTube": "YouTube'da demoyu izle",
+  "No exercises yet.": "Henüz egzersiz yok.",
+  "{0} loaded": "{0} yüklendi",
+  "A ready-made week — pick what fits your schedule. You can tweak anything after.": "Hazır bir hafta — programına uyanı seç. Sonrasında istediğin gibi düzenleyebilirsin.",
+  "Exercise": "Egzersiz",
 }

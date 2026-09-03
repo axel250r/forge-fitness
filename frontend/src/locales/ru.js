@@ -235,6 +235,7 @@ export default {
   '“{0}” and its exercises will be removed.': '«{0}» и её упражнения будут удалены.',
   'Delete routine': 'Удалить программу',
   '{0} exercises with animations': '{0} упражнений с анимациями',
+  '{0} exercises with YouTube demos': "{0} упражнений с демо на YouTube",
   'Search…': 'Поиск…',
   'No workouts yet.': 'Тренировок пока нет.',
   'Starter plan loaded — Mon Push · Wed Pull · Fri Legs': 'Стартовый план загружен — Пн Push · Ср Pull · Пт Ноги',
@@ -585,4 +586,10 @@ export default {
   '{0} sets of {1} — time to add weight or move to a harder variation.': '{0} × {1} — пора добавить вес или перейти к более сложному варианту.',
   '{0} per side': '{0} на сторону',
   'You still log the total: {0} is {1} per side.': 'Ты по-прежнему записываешь общее число: {0} — это {1} на сторону.',
+  "Reload Forge": "Перезагрузить Forge",
+  "Watch demo on YouTube": "Смотреть демо на YouTube",
+  "No exercises yet.": "Пока нет упражнений.",
+  "{0} loaded": "{0} загружено",
+  "A ready-made week — pick what fits your schedule. You can tweak anything after.": "Готовая неделя тренировок — выберите то, что подходит вашему графику. Потом всё можно изменить.",
+  "Exercise": "Упражнение",
 }

@@ -235,6 +235,7 @@ export default {
   '“{0}” and its exercises will be removed.': '«{0}» e os seus exercícios serão removidos.',
   'Delete routine': 'Eliminar rotina',
   '{0} exercises with animations': '{0} exercícios com animações',
+  '{0} exercises with YouTube demos': "{0} exercícios com demonstrações no YouTube",
   'Search…': 'Pesquisar…',
   'No workouts yet.': 'Ainda sem treinos.',
   'Starter plan loaded — Mon Push · Wed Pull · Fri Legs': 'Plano inicial carregado — Seg Push · Qua Pull · Sex Pernas',
@@ -585,4 +586,10 @@ export default {
   '{0} sets of {1} — time to add weight or move to a harder variation.': '{0} séries de {1} — hora de acrescentar peso ou passar a uma variação mais difícil.',
   '{0} per side': '{0} por lado',
   'You still log the total: {0} is {1} per side.': 'Continuas a registar o total: {0} são {1} por lado.',
+  "Reload Forge": "Recarregar Forge",
+  "Watch demo on YouTube": "Ver demonstração no YouTube",
+  "No exercises yet.": "Ainda sem exercícios.",
+  "{0} loaded": "{0} carregado",
+  "A ready-made week — pick what fits your schedule. You can tweak anything after.": "Uma semana pronta — escolha o que se encaixa na sua agenda. Você pode ajustar tudo depois.",
+  "Exercise": "Exercício",
 }
