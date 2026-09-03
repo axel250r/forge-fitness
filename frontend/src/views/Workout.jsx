@@ -42,7 +42,7 @@ function StartChooser() {
         <span className="lrow-i"><Icon name={glyphOf(r.emoji)} /></span>
         <div className="grow"><div className="tt">{r.name}</div><div className="ss">{exCount(r.ex.length)}</div></div>
         <span className="tag acc">{t('Start')}</span></div>)}</div></>}
-    {QUICK_SESSIONS.length > 0 && <div className="list">
+    {QUICK_SESSIONS.length > 0 && <div className="list" style={{ marginTop: 22 }}>
       <div className="item" onClick={() => nav('/quick-sessions')}>
         <span className="lrow-i"><Icon name="timer" /></span>
         <div className="grow"><div className="tt">{t('Short on time')}</div><div className="ss">{t('{0} full workouts, one video each', QUICK_SESSIONS.length)}</div></div>
