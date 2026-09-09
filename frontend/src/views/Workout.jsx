@@ -28,7 +28,7 @@ function StartChooser() {
   const others = S.routines.filter(r => r !== todayR)
   return <div className="narrow">
     <div className="hdr"><div><h1>{t('Start workout')}</h1><div className="sub">{t(DAYN[new Date().getDay()])} — {todayR ? t('today is {0}', todayR.name) : t('rest day, but no one’s stopping you')}</div></div></div>
-    <HelpTip id="workout" text="Forge shows today’s planned routine and pre-fills your weights from last time. Rest timers and progression happen automatically as you log each set." />
+    <HelpTip id="workout" text="Loadout shows today’s planned routine and pre-fills your weights from last time. Rest timers and progression happen automatically as you log each set." />
     {todayR && <div className="card" style={{ borderColor: 'var(--acc)' }}>
       <h2 className="accent">{t("Today's plan")}{todayOvr ? ' · ' + t('rescheduled') : ''}</h2>
       <div className="row between" style={{ marginBottom: 12 }}>
@@ -68,7 +68,7 @@ function Elapsed({ start }) {
 /* ---------- one exercise block (reps: weight×reps · time: a held duration · cardio: duration+speed) ---------- */
 function ExerciseBlock({ entryIdx, compact, onToggle, onField, onAddSet, onRemoveSet, onStartTimed }) {
   const S = useStore(s => s.S)
-  useStore(s => s.premium) // re-render when Forge Premium status changes (lib/paywall.js isLocked)
+  useStore(s => s.premium) // re-render when Loadout Premium status changes (lib/paywall.js isLocked)
   const working = useUI(s => s.work)
   const entry = S.active.entries[entryIdx]
   const ex = exOr(entry.id)
@@ -79,8 +79,8 @@ function ExerciseBlock({ entryIdx, compact, onToggle, onField, onAddSet, onRemov
   if (isLocked(ex)) return <div className="card" style={{ textAlign: 'center', padding: '18px 16px' }}>
     <div style={{ fontSize: 28, color: 'var(--acc)', marginBottom: 6 }}><Icon name="lock" /></div>
     <div style={{ fontWeight: 600, marginBottom: 4 }} className="capitalize">{ex.n}</div>
-    <div className="muted small" style={{ marginBottom: 12 }}>{t('This exercise is part of Forge Premium — skip it or unlock full access to train it.')}</div>
-    <Button variant="primary" icon="crown" onClick={() => paywallSheet()}>{t('Unlock Forge Premium')}</Button>
+    <div className="muted small" style={{ marginBottom: 12 }}>{t('This exercise is part of Loadout Premium — skip it or unlock full access to train it.')}</div>
+    <Button variant="primary" icon="crown" onClick={() => paywallSheet()}>{t('Unlock Loadout Premium')}</Button>
   </div>
   const mode = modeOf({ ...(entry.target || {}), id: entry.id })
   const cardio = mode === 'cardio'

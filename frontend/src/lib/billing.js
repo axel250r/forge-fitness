@@ -1,4 +1,4 @@
-// Google Play Billing (Forge Premium, $3/mo) via cordova-plugin-purchase, which wraps the
+// Google Play Billing (Loadout Premium, $3/mo) via cordova-plugin-purchase, which wraps the
 // native Play Billing Library.
 //
 // Verification is device-only, on purpose: Play's billing service is already the source of
@@ -8,8 +8,8 @@
 // an owned subscription locally. Accepted risk for a $3/mo fitness app with no resale value —
 // revisit if that ever changes (e.g. add a validator via store.validator, ideally with a
 // lightweight server, if piracy becomes an actual problem).
-export const PRODUCT_ID = 'forge_premium_monthly'
-export const PACKAGE_ID = 'com.forgefit.app'
+export const PRODUCT_ID = 'loadout_premium_monthly'
+export const PACKAGE_ID = 'com.loadoutfit.app'
 
 // The plugin only exists in the native Capacitor/Android build (window.CdvPurchase is never
 // defined in the browser or the self-hosted web build) — every export here is a safe no-op

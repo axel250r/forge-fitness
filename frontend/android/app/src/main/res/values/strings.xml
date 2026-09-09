@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Forge</string>
-    <string name="title_activity_main">Forge</string>
-    <string name="package_name">com.forgefit.app</string>
-    <string name="custom_url_scheme">com.forgefit.app</string>
+    <string name="app_name">Loadout</string>
+    <string name="title_activity_main">Loadout</string>
+    <string name="package_name">com.loadoutfit.app</string>
+    <string name="custom_url_scheme">com.loadoutfit.app</string>
 </resources>

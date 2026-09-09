@@ -57,7 +57,7 @@ function applyStarterPlan(key) {
 }
 
 function StarterPlanPicker({ close }) {
-  useStore(s => s.premium) // re-render when Forge Premium status changes (lib/paywall.js isStarterPlanLocked)
+  useStore(s => s.premium) // re-render when Loadout Premium status changes (lib/paywall.js isStarterPlanLocked)
   return <>
     <h3>{t('Load starter plan')}</h3>
     <div className="muted small" style={{ marginBottom: 12 }}>{t('A ready-made week — pick what fits your schedule. You can tweak anything after.')}</div>
@@ -75,7 +75,7 @@ function StarterPlanPicker({ close }) {
 }
 export const loadStarterPlan = () => ui().openSheet(close => <StarterPlanPicker close={close} />)
 
-/* ============================ paywall (Forge Premium) ============================ */
+/* ============================ paywall (Loadout Premium) ============================ */
 function Paywall({ close }) {
   const [busy, setBusy] = useState(false)
   const premium = useStore(s => s.premium)
@@ -86,7 +86,7 @@ function Paywall({ close }) {
   if (premium) return <>
     <div style={{ textAlign: 'center', padding: '4px 0 6px' }}>
       <div style={{ fontSize: 40, color: 'var(--acc)' }}><Icon name="crown" /></div>
-      <h3 style={{ marginTop: 8 }}>{t('You’re a Forge Premium member')}</h3>
+      <h3 style={{ marginTop: 8 }}>{t('You’re a Loadout Premium member')}</h3>
     </div>
     <Button variant="primary" onClick={close}>{t('Nice')}</Button>
   </>
@@ -98,7 +98,7 @@ function Paywall({ close }) {
       await purchase()
       // store.order() resolves once the native payment sheet closes either way — check the
       // live state rather than trusting the resolve, since backing out isn't an error.
-      if (useStore.getState().premium) { close(); toast(t('Welcome to Forge Premium!')) }
+      if (useStore.getState().premium) { close(); toast(t('Welcome to Loadout Premium!')) }
     } catch (e) {
       // e.message is whatever the native Play Billing layer (or our own reject) says, in
       // English — never shown directly, translated toast only. Logged for our own debugging.
@@ -125,7 +125,7 @@ function Paywall({ close }) {
   return <>
     <div style={{ textAlign: 'center', padding: '4px 0 6px' }}>
       <div style={{ fontSize: 40, color: 'var(--acc)' }}><Icon name="crown" /></div>
-      <h3 style={{ marginTop: 8 }}>{t('Unlock Forge Premium')}</h3>
+      <h3 style={{ marginTop: 8 }}>{t('Unlock Loadout Premium')}</h3>
       <div className="muted small" style={{ margin: '8px 0 4px', lineHeight: 1.5 }}>
         {t('Full access to the 1,324-exercise library with video demos, every starter plan, and everything still to come.')}
       </div>
@@ -409,7 +409,7 @@ function OneRM({ ex }) {
 
 function ExerciseDetail({ ex, close }) {
   const st = useStore(s => s.S)
-  useStore(s => s.premium) // re-render when Forge Premium status changes (lib/paywall.js isLocked)
+  useStore(s => s.premium) // re-render when Loadout Premium status changes (lib/paywall.js isLocked)
   const last = lastEntryFor(st, ex.id)
   const best = bestWeightFor(st, ex.id)
   const locked = isLocked(ex)
@@ -425,9 +425,9 @@ function ExerciseDetail({ ex, close }) {
       <div className="helptip" style={{ marginTop: 4 }}>
         <div className="helptip-row">
           <span className="helptip-i"><Icon name="lock" /></span>
-          <div className="helptip-body">{t('This exercise, its demo video and full instructions are part of Forge Premium.')}</div>
+          <div className="helptip-body">{t('This exercise, its demo video and full instructions are part of Loadout Premium.')}</div>
         </div>
-        <Button variant="primary" icon="crown" style={{ marginTop: 10 }} onClick={() => { close(); paywallSheet() }}>{t('Unlock Forge Premium')}</Button>
+        <Button variant="primary" icon="crown" style={{ marginTop: 10 }} onClick={() => { close(); paywallSheet() }}>{t('Unlock Loadout Premium')}</Button>
       </div>
     ) : <>
       <Media ex={ex} />
@@ -550,7 +550,7 @@ function usageMap(st) {
 function ExercisePicker({ onPick, close }) {
   const st = useStore(s => s.S)
   const update = useStore(s => s.update)
-  useStore(s => s.premium) // re-render when Forge Premium status changes (lib/paywall.js isLocked)
+  useStore(s => s.premium) // re-render when Loadout Premium status changes (lib/paywall.js isLocked)
   const usage = usageMap(st)
   const [q, setQ] = useState('')
   const [bp, setBp] = useState('')          // '' = all, '★' = chosen, else a body part
@@ -785,7 +785,7 @@ function PlanTools({ close }) {
   const exportFile = async () => {
     const bundle = buildPlanBundle(st, user?.name ? t('{0}’s plan', user.name) : '')
     const json = JSON.stringify(bundle, null, 2)
-    const name = 'forge-plan-' + todayISO() + '.json'
+    const name = 'loadout-plan-' + todayISO() + '.json'
     if (MOBILE) { try { await shareExport(json, name) } catch (e) { /* dismissed */ } close(); return }
     const blob = new Blob([json], { type: 'application/json' })
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); URL.revokeObjectURL(a.href)
@@ -805,7 +805,7 @@ function PlanTools({ close }) {
     <h3>{t('Share your plan')}</h3>
     <div className="muted small" style={{ marginBottom: 16 }}>{t('Send your routines to a friend, or put your week on paper.')}</div>
     <Button variant="primary" icon="upload" onClick={exportFile} disabled={!hasRoutines}>{t('Export plan file')}</Button>
-    <div className="dim small" style={{ margin: '7px 2px 0', lineHeight: 1.4 }}>{t('A small file a friend imports into their own Forge — routines only, none of your workouts or weigh-ins.')}</div>
+    <div className="dim small" style={{ margin: '7px 2px 0', lineHeight: 1.4 }}>{t('A small file a friend imports into their own Loadout — routines only, none of your workouts or weigh-ins.')}</div>
     {!MOBILE && <>
       <div style={{ height: 12 }} />
       <Button variant="tinted" icon="download" onClick={() => { close(); printPlan(st, user?.name || '') }} disabled={!hasRoutines}>{t('Print / Save as PDF')}</Button>

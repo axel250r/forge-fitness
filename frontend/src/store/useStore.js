@@ -84,7 +84,7 @@ export const useStore = create((set, get) => {
     S: (() => { const s = loadState(); registerCustom(s.customEx); return s })(),
     user: (() => { try { return JSON.parse(localStorage.getItem('gym_user')) || null } catch { return null } })(),
     ready: false,
-    // Live Forge Premium status — deliberately NOT part of S: it must always be re-derived from
+    // Live Loadout Premium status — deliberately NOT part of S: it must always be re-derived from
     // Play Billing (lib/billing.js), never trusted from localStorage or a restored backup.
     premium: false,
 

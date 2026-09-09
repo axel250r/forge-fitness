@@ -38,7 +38,7 @@ export default function Settings() {
 
   const doExport = async () => {
     const json = JSON.stringify(S, null, 2)
-    const name = 'forge-backup-' + todayISO() + '.json'
+    const name = 'loadout-backup-' + todayISO() + '.json'
     // WKWebView can't download blob URLs — the native build hands the file to the share sheet.
     if (MOBILE) {
       try { await shareExport(json, name); toast(t('Backup exported')) } catch (e) { /* share sheet dismissed */ }
@@ -54,7 +54,7 @@ export default function Settings() {
     rd.onload = () => {
       try {
         const data = JSON.parse(rd.result)
-        if (!data.workouts || !data.routines) throw new Error('not a Forge backup')
+        if (!data.workouts || !data.routines) throw new Error('not a Loadout backup')
         confirmSheet({ title: t('Import backup?'), message: t('This replaces all current data with the backup file.'), confirmText: t('Import'), danger: true, onConfirm: () => { replaceState(Object.assign(JSON.parse(JSON.stringify(DEF)), data), true); toast(t('Backup imported')) } })
       } catch (e) { toast(t('Import failed: {0}', e.message)) }
     }
@@ -89,10 +89,10 @@ export default function Settings() {
       {MOBILE ? <>
         <Row icon="lock" iconTint="var(--acc)" title={t('All data stays on this phone')} subtitle={t('No account, no cloud — back it up anytime with Export below.')} />
         {YOUTUBE_MEDIA && (premium
-          ? <Row icon="crown" iconTint="var(--acc)" title={t('Forge Premium')} subtitle={t('Active — manage or cancel anytime in Google Play.')} accessory="chevron"
+          ? <Row icon="crown" iconTint="var(--acc)" title={t('Loadout Premium')} subtitle={t('Active — manage or cancel anytime in Google Play.')} accessory="chevron"
             onClick={() => window.open(manageSubscriptionUrl(), '_blank', 'noopener')} />
           : <>
-            <Row icon="crown" iconTint="var(--acc)" title={t('Unlock Forge Premium')} subtitle={t('$3/month · full library, every starter plan')} accessory="chevron"
+            <Row icon="crown" iconTint="var(--acc)" title={t('Unlock Loadout Premium')} subtitle={t('$3/month · full library, every starter plan')} accessory="chevron"
               onClick={() => paywallSheet()} />
             {isBillingAvailable() && <Row icon="reset" iconTint="var(--grey)" title={t('Restore purchase')} subtitle={restoring ? t('Checking…') : t('Already subscribed on another device?')}
               accessory="chevron" onClick={doRestore} />}
@@ -219,7 +219,7 @@ export default function Settings() {
     </Section>}
 
     <div className="dim small" style={{ textAlign: 'center', marginTop: 4, lineHeight: 1.6 }}>
-      Forge · {t('free & open source (AGPL v3)')}<br />
+      Loadout · {t('free & open source (AGPL v3)')}<br />
       <a href={REPO} target="_blank" rel="noopener">source code</a> · exercise data: hasaneyldrm/exercises-dataset (CC)
     </div>
   </div>
@@ -332,7 +332,7 @@ function PushCard({ S, update, toast }) {
           (S.reminder?.tz ? ' ' + t('Timezone: {0} (auto-detected, updates if you travel).', S.reminder.tz) : '')
         : null}
     >
-      <Row icon="bell" iconTint="var(--red)" title={t('Push notifications')} subtitle={t('Rest-timer alerts, even if Forge is closed.')}>
+      <Row icon="bell" iconTint="var(--red)" title={t('Push notifications')} subtitle={t('Rest-timer alerts, even if Loadout is closed.')}>
         <Switch checked={on} disabled={busy} onChange={toggle} />
       </Row>
       {on && (

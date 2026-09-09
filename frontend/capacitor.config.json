@@ -1,6 +1,6 @@
 {
-  "appId": "com.forgefit.app",
-  "appName": "Forge",
+  "appId": "com.loadoutfit.app",
+  "appName": "Loadout",
   "webDir": "dist",
   "backgroundColor": "#0c0e12",
   "android": {

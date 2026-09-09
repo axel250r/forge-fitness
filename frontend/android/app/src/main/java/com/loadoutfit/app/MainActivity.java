@@ -1,4 +1,4 @@
-package com.forgefit.app;
+package com.loadoutfit.app;
 
 import com.getcapacitor.BridgeActivity;
 

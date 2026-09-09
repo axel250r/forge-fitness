@@ -1,6 +1,6 @@
 {
-  "name": "Forge",
-  "short_name": "Forge",
+  "name": "Loadout",
+  "short_name": "Loadout",
   "description": "Personal gym & body weight tracker",
   "start_url": "./",
   "scope": "./",
