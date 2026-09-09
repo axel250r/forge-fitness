@@ -32,4 +32,6 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Required by cordova-plugin-purchase (Google Play Billing) -->
+    <uses-permission android:name="com.android.vending.BILLING" />
 </manifest>

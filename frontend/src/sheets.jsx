@@ -9,6 +9,7 @@ import { t, instrFor, getLang, INSTR_LANGS } from './lib/i18n.js'
 import { nav } from './lib/nav.js'
 import { starterRoutines, STARTER_PLANS } from './lib/starter.js'
 import { isLocked, isStarterPlanLocked } from './lib/paywall.js'
+import { purchase, restorePurchases, isBillingAvailable } from './lib/billing.js'
 import { platesFor, DEFAULT_BAR } from './lib/plates.js'
 import Media, { Thumb } from './components/Media.jsx'
 import Stepper from './components/Stepper.jsx'
@@ -56,6 +57,7 @@ function applyStarterPlan(key) {
 }
 
 function StarterPlanPicker({ close }) {
+  useStore(s => s.premium) // re-render when Forge Premium status changes (lib/paywall.js isStarterPlanLocked)
   return <>
     <h3>{t('Load starter plan')}</h3>
     <div className="muted small" style={{ marginBottom: 12 }}>{t('A ready-made week — pick what fits your schedule. You can tweak anything after.')}</div>
@@ -74,9 +76,52 @@ function StarterPlanPicker({ close }) {
 export const loadStarterPlan = () => ui().openSheet(close => <StarterPlanPicker close={close} />)
 
 /* ============================ paywall (Forge Premium) ============================ */
-// Billing isn't wired up yet — this is the teaser/upsell UI, ready for the real Play
-// Billing call once the exercise-video catalogue is far enough along to launch it.
 function Paywall({ close }) {
+  const [busy, setBusy] = useState(false)
+  const premium = useStore(s => s.premium)
+
+  // A purchase can complete while this sheet is still open (the "approved" event fires async,
+  // slightly after the native payment sheet closes) — swap to a confirmation instead of asking
+  // an already-subscribed person to subscribe again.
+  if (premium) return <>
+    <div style={{ textAlign: 'center', padding: '4px 0 6px' }}>
+      <div style={{ fontSize: 40, color: 'var(--acc)' }}><Icon name="crown" /></div>
+      <h3 style={{ marginTop: 8 }}>{t('You’re a Forge Premium member')}</h3>
+    </div>
+    <Button variant="primary" onClick={close}>{t('Nice')}</Button>
+  </>
+
+  const subscribe = async () => {
+    if (!isBillingAvailable()) { toast(t('Subscriptions are only available in the Play Store version of the app.')); return }
+    setBusy(true)
+    try {
+      await purchase()
+      // store.order() resolves once the native payment sheet closes either way — check the
+      // live state rather than trusting the resolve, since backing out isn't an error.
+      if (useStore.getState().premium) { close(); toast(t('Welcome to Forge Premium!')) }
+    } catch (e) {
+      // e.message is whatever the native Play Billing layer (or our own reject) says, in
+      // English — never shown directly, translated toast only. Logged for our own debugging.
+      console.error('[billing]', e)
+      toast(t('Something went wrong — try again.'))
+    } finally {
+      setBusy(false)
+    }
+  }
+  const restore = async () => {
+    setBusy(true)
+    try {
+      await restorePurchases()
+      if (useStore.getState().premium) { close(); toast(t('Subscription restored.')) }
+      else toast(t('No active subscription found for this account.'))
+    } catch (e) {
+      console.error('[billing]', e)
+      toast(t('Something went wrong — try again.'))
+    } finally {
+      setBusy(false)
+    }
+  }
+
   return <>
     <div style={{ textAlign: 'center', padding: '4px 0 6px' }}>
       <div style={{ fontSize: 40, color: 'var(--acc)' }}><Icon name="crown" /></div>
@@ -85,11 +130,14 @@ function Paywall({ close }) {
         {t('Full access to the 1,324-exercise library with video demos, every starter plan, and everything still to come.')}
       </div>
     </div>
-    <Button variant="primary" icon="crown" onClick={() => { close(); toast(t('Subscriptions aren’t live yet — check back soon.')) }}>
-      {t('Subscribe — $3/month')}
+    <Button variant="primary" icon="crown" disabled={busy} onClick={subscribe}>
+      {busy ? t('Processing…') : t('Subscribe — $3/month')}
     </Button>
     <div style={{ height: 8 }} />
-    <Button variant="ghost" className="dim" onClick={close}>{t('Maybe later')}</Button>
+    <Button variant="ghost" className="dim" disabled={busy} onClick={close}>{t('Maybe later')}</Button>
+    <button className="helptip-link" style={{ display: 'block', margin: '14px auto 0' }} disabled={busy} onClick={restore}>
+      {t('Restore purchase')}
+    </button>
   </>
 }
 export const paywallSheet = () => ui().openSheet(close => <Paywall close={close} />, { kind: 'center' })
@@ -361,6 +409,7 @@ function OneRM({ ex }) {
 
 function ExerciseDetail({ ex, close }) {
   const st = useStore(s => s.S)
+  useStore(s => s.premium) // re-render when Forge Premium status changes (lib/paywall.js isLocked)
   const last = lastEntryFor(st, ex.id)
   const best = bestWeightFor(st, ex.id)
   const locked = isLocked(ex)
@@ -501,6 +550,7 @@ function usageMap(st) {
 function ExercisePicker({ onPick, close }) {
   const st = useStore(s => s.S)
   const update = useStore(s => s.update)
+  useStore(s => s.premium) // re-render when Forge Premium status changes (lib/paywall.js isLocked)
   const usage = usageMap(st)
   const [q, setQ] = useState('')
   const [bp, setBp] = useState('')          // '' = all, '★' = chosen, else a body part

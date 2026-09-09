@@ -11,7 +11,8 @@ import { t, LANGS, INSTR_LANGS } from '../lib/i18n.js'
 import { DEMO, REPO } from '../lib/demo.js'
 import { MOBILE, shareExport, syncReminder } from '../lib/mobile.js'
 import { YOUTUBE_MEDIA } from '../lib/exercises.js'
-import { loadStarterPlan, confirmSheet, importFromApp } from '../sheets.jsx'
+import { restorePurchases, manageSubscriptionUrl, isBillingAvailable } from '../lib/billing.js'
+import { loadStarterPlan, confirmSheet, importFromApp, paywallSheet } from '../sheets.jsx'
 import Icon from '../components/Icon.jsx'
 import { Section, Row, SelectRow, Switch, Segmented, Button, TextField } from '../components/ui.jsx'
 
@@ -19,11 +20,21 @@ export default function Settings() {
   const nav = useNavigate()
   const S = useStore(s => s.S)
   const user = useStore(s => s.user)
-  const { update, replaceState, setUser, pullState, pushState, signOut, signOutAll, resetDemo } = useStore()
+  const { update, replaceState, setUser, pullState, pushState, signOut, signOutAll, resetDemo, premium } = useStore()
   const toast = useUI(s => s.toast)
   const fileRef = useRef(null)
   const importRef = useRef(null)
   const wakeOK = wakeLockSupported()
+  const [restoring, setRestoring] = useState(false)
+  const doRestore = async () => {
+    if (restoring) return
+    setRestoring(true)
+    try {
+      await restorePurchases()
+      toast(useStore.getState().premium ? t('Subscription restored.') : t('No active subscription found for this account.'))
+    } catch (e) { console.error('[billing]', e); toast(t('Something went wrong — try again.')) }
+    finally { setRestoring(false) }
+  }
 
   const doExport = async () => {
     const json = JSON.stringify(S, null, 2)
@@ -77,6 +88,15 @@ export default function Settings() {
     <Section title={MOBILE ? t('Your data') : DEMO ? t('Demo') : t('Account')}>
       {MOBILE ? <>
         <Row icon="lock" iconTint="var(--acc)" title={t('All data stays on this phone')} subtitle={t('No account, no cloud — back it up anytime with Export below.')} />
+        {YOUTUBE_MEDIA && (premium
+          ? <Row icon="crown" iconTint="var(--acc)" title={t('Forge Premium')} subtitle={t('Active — manage or cancel anytime in Google Play.')} accessory="chevron"
+            onClick={() => window.open(manageSubscriptionUrl(), '_blank', 'noopener')} />
+          : <>
+            <Row icon="crown" iconTint="var(--acc)" title={t('Unlock Forge Premium')} subtitle={t('$3/month · full library, every starter plan')} accessory="chevron"
+              onClick={() => paywallSheet()} />
+            {isBillingAvailable() && <Row icon="reset" iconTint="var(--grey)" title={t('Restore purchase')} subtitle={restoring ? t('Checking…') : t('Already subscribed on another device?')}
+              accessory="chevron" onClick={doRestore} />}
+          </>)}
         {!YOUTUBE_MEDIA && <Row icon="rocket" iconTint="var(--indigo)" title={t('Self-host openGym')} subtitle={t('Passkey sign-in, sync across your devices, your own data.')} accessory="chevron"
           onClick={() => window.open(REPO, '_blank', 'noopener')} />}
       </> : DEMO ? <>

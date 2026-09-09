@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { useStore } from '../store/useStore.js'
 import { t } from '../lib/i18n.js'
 import { QUICK_SESSIONS, quickSessionUrl, quickSessionThumb } from '../lib/quick-sessions.js'
 import { isQuickSessionLocked } from '../lib/paywall.js'
@@ -12,6 +13,7 @@ import HelpTip from '../components/HelpTip.jsx'
 // so the curated list (lib/quick-sessions.js) can grow over time with its own room to do so.
 export default function QuickSessions() {
   const nav = useNavigate()
+  useStore(s => s.premium) // re-render when Forge Premium status changes (lib/paywall.js isQuickSessionLocked)
   return <>
     <div className="hdr"><button className="iconbtn" onClick={() => nav('/workout')} aria-label={t('Start workout')}><Icon name="chevronLeft" /></button>
       <div style={{ flex: 1, marginLeft: 12 }}><h1>{t('Short on time')}</h1><div className="sub">{t('{0} full workouts, one video each', QUICK_SESSIONS.length)}</div></div></div>

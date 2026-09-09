@@ -8,6 +8,14 @@
 // Chosen to exactly cover the Full Body starter plan (lib/starter.js) plus a few staples
 // per body part, so that one plan is a complete, unlocked, real workout on its own.
 import { YOUTUBE_MEDIA } from './exercises.js'
+import { useStore } from '../store/useStore.js'
+
+// Mirrors S.premium (lib/billing.js, via useStore) into a plain module-level variable so
+// isLocked/isFreeExercise/etc. below can stay plain functions — they're called inline all over
+// the UI (list .map() callbacks, mostly), not as hooks. A component still needs its own
+// `useStore(s => s.premium)` call to actually re-render when a purchase/expiry flips this.
+let premium = useStore.getState().premium
+useStore.subscribe(s => { premium = s.premium })
 
 export const FREE_EXERCISE_IDS = new Set([
   '0043', // barbell full squat
@@ -26,14 +34,19 @@ export const FREE_EXERCISE_IDS = new Set([
 ])
 
 // Only the paid build gates anything — everywhere else every exercise is free, same as upstream.
-export const isFreeExercise = ex => !YOUTUBE_MEDIA || !!ex.custom || FREE_EXERCISE_IDS.has(ex.id)
+// An active subscription (premium) unlocks everything, same as if the build weren't gated.
+export const isFreeExercise = ex => !YOUTUBE_MEDIA || premium || !!ex.custom || FREE_EXERCISE_IDS.has(ex.id)
 export const isLocked = ex => !isFreeExercise(ex)
 
 // Starter plans (lib/starter.js) that stay fully within the free set. Others are previewable
 // but locked — loading one shows the paywall instead.
 export const FREE_STARTER_PLANS = new Set(['fullBody'])
-export const isStarterPlanLocked = key => YOUTUBE_MEDIA && !FREE_STARTER_PLANS.has(key)
+export const isStarterPlanLocked = key => YOUTUBE_MEDIA && !premium && !FREE_STARTER_PLANS.has(key)
 
 // Quick Sessions (lib/quick-sessions.js) carry their own `free` flag straight from the curated
 // list — same gate shape as an exercise, just sourced differently.
-export const isQuickSessionLocked = s => YOUTUBE_MEDIA && !s.free
+export const isQuickSessionLocked = s => YOUTUBE_MEDIA && !premium && !s.free
+
+// For UI that needs the raw flag directly (Settings, the paywall sheet) rather than through one
+// of the gates above.
+export const isPremium = () => premium
