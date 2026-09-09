@@ -30,8 +30,11 @@ function refreshOwned(onChange) {
 // Call once at boot. `onChange(owned)` fires every time subscription status changes (purchase,
 // restore, renewal, cancellation/expiry) — the caller (useStore) mirrors it into store state so
 // isLocked/isFreeExercise (lib/paywall.js) and the UI react to it.
+// Returns a promise so boot() can wait for the initial owned-state query — otherwise the app
+// would render with `premium` at its default `false` for however long that query takes, flashing
+// the Premium paywall on content an already-subscribed person already unlocked.
 export function initBilling(onChange) {
-  if (!AVAILABLE) return
+  if (!AVAILABLE) return Promise.resolve()
   const { store, ProductType, Platform } = window.CdvPurchase
 
   store.register({ id: PRODUCT_ID, type: ProductType.PAID_SUBSCRIPTION, platform: Platform.GOOGLE_PLAY })
@@ -45,10 +48,10 @@ export function initBilling(onChange) {
 
   store.error(err => console.error('[billing]', err.message || err))
 
-  store.initialize([Platform.GOOGLE_PLAY]).then(() => {
+  return store.initialize([Platform.GOOGLE_PLAY]).then(() => {
     ready = true
     refreshOwned(onChange)
-  })
+  }).catch(err => console.error('[billing] initialize failed', err))
 }
 
 // Starts the native purchase flow (shows Google's own payment sheet). Resolves once the flow

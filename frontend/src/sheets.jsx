@@ -79,10 +79,26 @@ export const loadStarterPlan = () => ui().openSheet(close => <StarterPlanPicker 
 function Paywall({ close }) {
   const [busy, setBusy] = useState(false)
   const premium = useStore(s => s.premium)
+  // Which action we're waiting on billing to confirm, if any. Play Billing confirms a
+  // purchase/restore through an async "productUpdated" event that can land a beat *after*
+  // purchase()/restorePurchases() already resolved — checking `premium` synchronously right
+  // after the await races that event and can miss a real, successful purchase. Reacting to
+  // `premium` actually turning true below (whenever that happens) closes that race instead of
+  // guessing at a timeout.
+  const pending = useRef(null)
 
-  // A purchase can complete while this sheet is still open (the "approved" event fires async,
-  // slightly after the native payment sheet closes) — swap to a confirmation instead of asking
-  // an already-subscribed person to subscribe again.
+  useEffect(() => {
+    if (!premium || !pending.current) return
+    const action = pending.current
+    pending.current = null
+    close()
+    toast(action === 'subscribe' ? t('Welcome to Loadout Premium!') : t('Subscription restored.'))
+  }, [premium])
+
+  // A purchase can complete while this sheet is still open — swap to a confirmation instead of
+  // asking an already-subscribed person to subscribe again. (The effect above already handles
+  // closing/toasting for a purchase that completes *during* this sheet's lifetime; this covers
+  // reopening the sheet when already subscribed.)
   if (premium) return <>
     <div style={{ textAlign: 'center', padding: '4px 0 6px' }}>
       <div style={{ fontSize: 40, color: 'var(--acc)' }}><Icon name="crown" /></div>
@@ -94,14 +110,16 @@ function Paywall({ close }) {
   const subscribe = async () => {
     if (!isBillingAvailable()) { toast(t('Subscriptions are only available in the Play Store version of the app.')); return }
     setBusy(true)
+    pending.current = 'subscribe'
     try {
       await purchase()
-      // store.order() resolves once the native payment sheet closes either way — check the
-      // live state rather than trusting the resolve, since backing out isn't an error.
-      if (useStore.getState().premium) { close(); toast(t('Welcome to Loadout Premium!')) }
+      // Resolves once the native payment sheet closes either way (including a plain cancel,
+      // which cordova-plugin-purchase resolves rather than rejects) — the effect above is what
+      // actually confirms success, once `premium` flips. Nothing to do here on a quiet cancel.
     } catch (e) {
       // e.message is whatever the native Play Billing layer (or our own reject) says, in
       // English — never shown directly, translated toast only. Logged for our own debugging.
+      pending.current = null
       console.error('[billing]', e)
       toast(t('Something went wrong — try again.'))
     } finally {
@@ -109,12 +127,18 @@ function Paywall({ close }) {
     }
   }
   const restore = async () => {
+    if (!isBillingAvailable()) { toast(t('Subscriptions are only available in the Play Store version of the app.')); return }
     setBusy(true)
+    pending.current = 'restore'
     try {
       await restorePurchases()
-      if (useStore.getState().premium) { close(); toast(t('Subscription restored.')) }
-      else toast(t('No active subscription found for this account.'))
+      // restorePurchases() resolving only means the re-sync was requested — give the async
+      // event a moment to land (same race as above) before concluding there's nothing to
+      // restore. If it lands, the effect clears `pending` first and this is a no-op.
+      await new Promise(r => setTimeout(r, 1200))
+      if (pending.current) { pending.current = null; toast(t('No active subscription found for this account.')) }
     } catch (e) {
+      pending.current = null
       console.error('[billing]', e)
       toast(t('Something went wrong — try again.'))
     } finally {

@@ -35,7 +35,11 @@ export const FREE_EXERCISE_IDS = new Set([
 
 // Only the paid build gates anything — everywhere else every exercise is free, same as upstream.
 // An active subscription (premium) unlocks everything, same as if the build weren't gated.
-export const isFreeExercise = ex => !YOUTUBE_MEDIA || premium || !!ex.custom || FREE_EXERCISE_IDS.has(ex.id)
+// `ex.missing` (lib/exercises.js exOr) is a placeholder for an id the dataset doesn't have —
+// a broken plan-file/backup reference, not real Premium content, so it's never gated: a
+// subscription can't fix a dead reference, and the app still needs the "Unknown exercise"
+// remove/skip path underneath, which the locked-teaser card doesn't offer.
+export const isFreeExercise = ex => !YOUTUBE_MEDIA || premium || !!ex.custom || !!ex.missing || FREE_EXERCISE_IDS.has(ex.id)
 export const isLocked = ex => !isFreeExercise(ex)
 
 // Starter plans (lib/starter.js) that stay fully within the free set. Others are previewable

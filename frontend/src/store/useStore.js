@@ -154,7 +154,10 @@ export const useStore = create((set, get) => {
       // Mobile build: no backend either — restore from the file mirror (the durable copy;
       // localStorage may have been evicted since the last run) and go straight in.
       if (MOBILE) {
-        initBilling(owned => set({ premium: owned }))
+        // Runs alongside nativeLoad() below rather than blocking on it — but `ready` still
+        // waits (capped) for this, so an already-subscribed person's first frame doesn't flash
+        // locked/paywalled content just because Play Billing's initial query hasn't landed yet.
+        const billingReady = initBilling(owned => set({ premium: owned }))
         const saved = await nativeLoad()
         const S = get().S
         if (saved && (!hasData(S) || (saved._ts || 0) >= (S._ts || 0))) {
@@ -164,6 +167,7 @@ export const useStore = create((set, get) => {
         }
         get().setGuest(true)
         syncReminder(get().S)
+        await Promise.race([billingReady, new Promise(r => setTimeout(r, 2500))])
         set({ ready: true })
         return
       }

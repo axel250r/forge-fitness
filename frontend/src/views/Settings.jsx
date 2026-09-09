@@ -31,6 +31,10 @@ export default function Settings() {
     setRestoring(true)
     try {
       await restorePurchases()
+      // restorePurchases() resolving only means the re-sync was requested — Play Billing
+      // confirms it through an async event that can land a beat later, so give it a moment
+      // before concluding there's nothing to restore (same race as sheets.jsx's Paywall).
+      await new Promise(r => setTimeout(r, 1200))
       toast(useStore.getState().premium ? t('Subscription restored.') : t('No active subscription found for this account.'))
     } catch (e) { console.error('[billing]', e); toast(t('Something went wrong — try again.')) }
     finally { setRestoring(false) }
