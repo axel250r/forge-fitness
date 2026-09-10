@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loadout Privacy Policy</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #f6f4f0;
+    --surface: #ffffff;
+    --surface-2: #efece4;
+    --text: #181920;
+    --text-2: #5c606c;
+    --accent: #d9800a;
+    --accent-soft: rgba(217,128,10,.10);
+    --accent-text: #7a4c06;
+    --border: #e3e0d8;
+    --ok: #3d7a4f;
+    --no: #b23b3b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c0e12;
+      --surface: #15181f;
+      --surface-2: #1b1e26;
+      --text: #eceef2;
+      --text-2: #99a0ad;
+      --accent: #ff9f0a;
+      --accent-soft: rgba(255,159,10,.14);
+      --accent-text: #ffc06b;
+      --border: #262a33;
+      --ok: #6cbf85;
+      --no: #e2837a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c0e12;
+    --surface: #15181f;
+    --surface-2: #1b1e26;
+    --text: #eceef2;
+    --text-2: #99a0ad;
+    --accent: #ff9f0a;
+    --accent-soft: rgba(255,159,10,.14);
+    --accent-text: #ffc06b;
+    --border: #262a33;
+    --ok: #6cbf85;
+    --no: #e2837a;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 56px 24px 96px;
+  }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent-text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 2px;
+    background: var(--accent);
+    display: inline-block;
+  }
+  h1 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    font-size: clamp(40px, 8vw, 60px);
+    letter-spacing: -.01em;
+    line-height: .96;
+    text-transform: uppercase;
+    margin: 10px 0 6px;
+    text-wrap: balance;
+  }
+  .sub {
+    color: var(--text-2);
+    font-size: 16px;
+    max-width: 52ch;
+  }
+  .meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--text-2);
+    margin-top: 18px;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .meta b { color: var(--text); font-weight: 500; }
+
+  .manifest {
+    margin-top: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .manifest-head {
+    padding: 16px 20px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-2);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: baseline;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .row:last-child { border-bottom: none; }
+  .row .k { font-size: 15px; }
+  .row .v {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .v.ok { color: var(--ok); }
+  .v.no { color: var(--no); }
+  .v.neutral { color: var(--text-2); }
+
+  section { margin-top: 52px; }
+  .num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--accent-text);
+    letter-spacing: .04em;
+  }
+  h2 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    text-transform: uppercase;
+    letter-spacing: -.005em;
+    margin: 4px 0 14px;
+    text-wrap: balance;
+  }
+  section p, section li {
+    max-width: 62ch;
+    font-size: 15.5px;
+    color: var(--text);
+  }
+  section p + p { margin-top: 12px; }
+  ul { padding-left: 20px; margin: 12px 0 0; }
+  li + li { margin-top: 8px; }
+  li::marker { color: var(--accent); }
+  strong { font-weight: 600; }
+
+  .callout {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    font-size: 14.5px;
+    max-width: 62ch;
+  }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-2);
+  }
+  footer a { color: var(--accent-text); text-decoration: none; border-bottom: 1px solid currentColor; }
+
+  @media (max-width: 480px) {
+    .wrap { padding: 40px 18px 72px; }
+    .row { grid-template-columns: 1fr; gap: 4px; }
+    .row .v { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="eyebrow">Loadout · Privacy Policy</div>
+  <h1>What's in the loadout</h1>
+  <p class="sub">A plain accounting of what this app collects, stores, and sends — and, mostly, what it doesn't.</p>
+  <div class="meta">
+    <span>Effective <b>September 9, 2026</b></span>
+    <span>Applies to <b>Loadout</b> for Android (com.loadoutfit.app)</span>
+  </div>
+
+  <div class="manifest">
+    <div class="manifest-head">Summary — the short version</div>
+    <div class="row"><div class="k">Account required</div><div class="v no">No</div></div>
+    <div class="row"><div class="k">Data leaves your phone</div><div class="v no">No</div></div>
+    <div class="row"><div class="k">Analytics / tracking</div><div class="v no">None</div></div>
+    <div class="row"><div class="k">Ads</div><div class="v no">None</div></div>
+    <div class="row"><div class="k">Data sold or shared</div><div class="v no">Never</div></div>
+    <div class="row"><div class="k">Payment handled by</div><div class="v neutral">Google Play, directly</div></div>
+    <div class="row"><div class="k">Backups leave your phone</div><div class="v neutral">Only if you export one</div></div>
+  </div>
+
+  <section>
+    <div class="num">01</div>
+    <h2>Where your data lives</h2>
+    <p>Loadout is built to work entirely on your device. Every workout you log, every body-weight entry, every routine you build, and every setting you change is written to storage on your phone and <strong>nowhere else</strong>. There's no server behind the app collecting or syncing this — there isn't a server at all.</p>
+    <p>This includes the exact things the app remembers: workout history, active sessions, routines and their weekly schedule, weigh-ins, custom exercises you create, and your app preferences (units, theme, rest-timer length, and similar).</p>
+  </section>
+
+  <section>
+    <div class="num">02</div>
+    <h2>What we don't collect</h2>
+    <p>Loadout doesn't ask for an account, an email address, or your name to use the app. It doesn't run analytics or crash-reporting that phones home, doesn't request your location, doesn't touch your contacts, camera, or microphone, and doesn't include advertising of any kind — so there's no advertising ID to collect either.</p>
+    <ul>
+      <li>No sign-up, no login, no profile</li>
+      <li>No usage analytics or telemetry</li>
+      <li>No advertising or ad tracking</li>
+      <li>No access to contacts, camera, microphone, or location</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="num">03</div>
+    <h2>Backups you export</h2>
+    <p>Settings includes an <strong>Export backup</strong> option that writes your data to a JSON file. Creating and sharing that file is something <strong>you</strong> choose to do, through Android's own share sheet — Loadout itself never uploads it anywhere. Where that file goes after that (a cloud drive, an email, a folder) is entirely up to you and governed by whatever app or service you send it to, not by Loadout.</p>
+  </section>
+
+  <section>
+    <div class="num">04</div>
+    <h2>Loadout Premium (subscription)</h2>
+    <p>The optional monthly subscription is processed entirely by <strong>Google Play Billing</strong>. When you subscribe, Google handles your payment method and transaction directly — Loadout never sees your card number or any payment details, and doesn't store them. The app only ever receives a simple active-or-not status for your subscription from Google Play's on-device billing library, so it knows whether to unlock the paid content.</p>
+    <div class="callout">Managing or cancelling the subscription happens inside Google Play, not inside Loadout — Settings links straight there.</div>
+  </section>
+
+  <section>
+    <div class="num">05</div>
+    <h2>Exercise demo videos</h2>
+    <p>Exercise entries can link out to a YouTube video demonstrating that movement. Tapping one opens YouTube (the app or a browser) outside of Loadout. That's Google's product at that point, governed by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color:var(--accent-text)">YouTube's own privacy policy</a> — Loadout doesn't pass it anything about you.</p>
+  </section>
+
+  <section>
+    <div class="num">06</div>
+    <h2>Children's privacy</h2>
+    <p>Loadout isn't directed at children and doesn't knowingly collect information from anyone — which, per the sections above, is by design true for every user regardless of age.</p>
+  </section>
+
+  <section>
+    <div class="num">07</div>
+    <h2>Changes to this policy</h2>
+    <p>If this policy changes, the <strong>Effective</strong> date at the top will change with it. Meaningful changes will also be noted in the app's release notes on Google Play.</p>
+  </section>
+
+  <footer>
+    Questions about this policy — <a href="mailto:loadout2102@gmail.com">loadout2102@gmail.com</a>
+  </footer>
+
+</div>
+
+</body>
+</html>
