@@ -1,15 +1,23 @@
-// Google Play Billing (Loadout Premium, $3/mo) via cordova-plugin-purchase, which wraps the
-// native Play Billing Library.
+// Google Play Billing (Loadout Premium) via cordova-plugin-purchase, which wraps the native
+// Play Billing Library. The actual price is never hardcoded here — it's whatever's configured
+// for PRODUCT_ID in Play Console's Monetization section, read live off the product and mirrored
+// into useStore's `premiumPrice` (FALLBACK_PRICE is only the pre-load placeholder).
 //
 // Verification is device-only, on purpose: Play's billing service is already the source of
 // truth for whether a purchase happened, and this app runs no server to re-check receipts
 // against — same "everything stays on your phone" design as the rest of it (see Settings'
 // "no account, no cloud" copy). The tradeoff: a rooted/tampered device could in theory spoof
-// an owned subscription locally. Accepted risk for a $3/mo fitness app with no resale value —
-// revisit if that ever changes (e.g. add a validator via store.validator, ideally with a
-// lightweight server, if piracy becomes an actual problem).
+// an owned subscription locally. Accepted risk for a cheap fitness-app subscription with no
+// resale value — revisit if that ever changes (e.g. add a validator via store.validator,
+// ideally with a lightweight server, if piracy becomes an actual problem).
 export const PRODUCT_ID = 'loadout_premium_monthly'
 export const PACKAGE_ID = 'com.loadoutfit.app'
+
+// Cosmetic placeholder shown only in the sliver of time before Play Billing reports the real,
+// store-localized price — practically never seen (boot() waits on that query). Keep roughly in
+// step with the CLP price set in Play Console so the flash isn't jarring; nothing charges from
+// this value.
+export const FALLBACK_PRICE = '$4.990'
 
 // The plugin only exists in the native Capacitor/Android build (window.CdvPurchase is never
 // defined in the browser or the self-hosted web build) — every export here is a safe no-op
@@ -18,17 +26,25 @@ const AVAILABLE = typeof window !== 'undefined' && !!window.CdvPurchase
 
 let owned = false
 let ready = false
+let price = null
 
+// Reads the live, store-localized price (e.g. "$4.990" for a Chilean account, "$5.25" for a US
+// one) straight off the product Play just sent us — never hardcoded, so it always matches
+// whatever's configured in Play Console's Monetization section, in the viewer's own currency,
+// and never goes stale if that price changes later.
 function refreshOwned(onChange) {
   const { store } = window.CdvPurchase
-  const next = !!store.get(PRODUCT_ID)?.owned
-  if (next === owned) return
+  const product = store.get(PRODUCT_ID)
+  const next = !!product?.owned
+  const nextPrice = product?.pricing?.price || null
+  if (next === owned && nextPrice === price) return
   owned = next
-  onChange(owned)
+  price = nextPrice
+  onChange(owned, price)
 }
 
-// Call once at boot. `onChange(owned)` fires every time subscription status changes (purchase,
-// restore, renewal, cancellation/expiry) — the caller (useStore) mirrors it into store state so
+// Call once at boot. `onChange(owned, price)` fires every time subscription status or the
+// product's pricing info changes — the caller (useStore) mirrors both into store state so
 // isLocked/isFreeExercise (lib/paywall.js) and the UI react to it.
 // Returns a promise so boot() can wait for the initial owned-state query — otherwise the app
 // would render with `premium` at its default `false` for however long that query takes, flashing

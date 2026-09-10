@@ -9,7 +9,7 @@ import { t, instrFor, getLang, INSTR_LANGS } from './lib/i18n.js'
 import { nav } from './lib/nav.js'
 import { starterRoutines, STARTER_PLANS } from './lib/starter.js'
 import { isLocked, isStarterPlanLocked } from './lib/paywall.js'
-import { purchase, restorePurchases, isBillingAvailable } from './lib/billing.js'
+import { purchase, restorePurchases, isBillingAvailable, FALLBACK_PRICE } from './lib/billing.js'
 import { platesFor, DEFAULT_BAR } from './lib/plates.js'
 import Media, { Thumb } from './components/Media.jsx'
 import Stepper from './components/Stepper.jsx'
@@ -79,6 +79,7 @@ export const loadStarterPlan = () => ui().openSheet(close => <StarterPlanPicker 
 function Paywall({ close }) {
   const [busy, setBusy] = useState(false)
   const premium = useStore(s => s.premium)
+  const price = useStore(s => s.premiumPrice) || FALLBACK_PRICE
   // Which action we're waiting on billing to confirm, if any. Play Billing confirms a
   // purchase/restore through an async "productUpdated" event that can land a beat *after*
   // purchase()/restorePurchases() already resolved — checking `premium` synchronously right
@@ -155,7 +156,7 @@ function Paywall({ close }) {
       </div>
     </div>
     <Button variant="primary" icon="crown" disabled={busy} onClick={subscribe}>
-      {busy ? t('Processing…') : t('Subscribe — $3/month')}
+      {busy ? t('Processing…') : t('Subscribe — {0}/month', price)}
     </Button>
     <div style={{ height: 8 }} />
     <Button variant="ghost" className="dim" disabled={busy} onClick={close}>{t('Maybe later')}</Button>

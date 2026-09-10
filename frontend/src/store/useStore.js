@@ -5,6 +5,7 @@ import { registerCustom } from '../lib/exercises.js'
 import { DEMO, DEMO_SEEDED } from '../lib/demo.js'
 import { MOBILE, nativeLoad, nativeSave, syncReminder } from '../lib/mobile.js'
 import { initBilling } from '../lib/billing.js'
+import { isValidGiftCode } from '../lib/giftcodes.js'
 
 const KEY = 'gym_state_v1'
 export const DEF = {
@@ -16,7 +17,12 @@ export const DEF = {
   // that a profile which never chose (loaded state is overlaid on DEF, on every path: local,
   // server pull, backup import) still falls back to the `showRir` boolean this replaced and
   // keeps the column it had. See effortOf.
-  reminder: { on: false, time: '08:00', tz: null }, effort: null
+  reminder: { on: false, time: '08:00', tz: null }, effort: null,
+  // Perpetual free Premium redeemed via a gift code (lib/giftcodes.js) — deliberately part of S,
+  // unlike the billing-derived `premium` flag below: this one has no store to re-check against,
+  // it IS the record, so it has to survive the same way the rest of a profile's data does
+  // (local mirror, backup export/import) for it to actually be "perpetual" across reinstalls.
+  giftPremium: false,
 }
 const clone = o => JSON.parse(JSON.stringify(o))
 
@@ -33,6 +39,10 @@ const hasData = st => !!((st.workouts || []).length || (st.routines || []).lengt
 export const useStore = create((set, get) => {
   let pushTm = null
   let saveTm = null
+  // Raw Play Billing status, kept separate from the `premium` field below: `premium` is the
+  // *effective* flag every isLocked/isFreeExercise call reads, combining this with S.giftPremium
+  // — a gifted person is never billed, so it must not depend on Play Billing having initialized.
+  let billingOwned = false
 
   // Mobile build: mirror the state into a file in the app's data directory (survives WebView
   // storage eviction) and keep the native reminder schedule in step with the weekly plan.
@@ -45,7 +55,7 @@ export const useStore = create((set, get) => {
     S._ts = Date.now()
     registerCustom(S.customEx)
     localStorage.setItem(KEY, JSON.stringify(S))
-    set({ S })
+    set({ S, premium: billingOwned || !!S.giftPremium })
     if (MOBILE) nativePersist()
     if (push && get().user) {
       clearTimeout(pushTm)
@@ -84,9 +94,13 @@ export const useStore = create((set, get) => {
     S: (() => { const s = loadState(); registerCustom(s.customEx); return s })(),
     user: (() => { try { return JSON.parse(localStorage.getItem('gym_user')) || null } catch { return null } })(),
     ready: false,
-    // Live Loadout Premium status — deliberately NOT part of S: it must always be re-derived from
-    // Play Billing (lib/billing.js), never trusted from localStorage or a restored backup.
+    // Effective live Loadout Premium status: real Play Billing ownership OR a redeemed gift code
+    // (S.giftPremium, see redeemGiftCode below). Deliberately NOT part of S itself — recomputed
+    // in persist()/the billing callback above rather than trusted verbatim from localStorage or
+    // a restored backup, since the billing half of it never lives in S.
     premium: false,
+    // Store-localized subscription price (e.g. "$4.990"), null until Play Billing reports it.
+    premiumPrice: null,
 
     // Mutate a draft of S via producer fn, then persist + schedule sync.
     update(mut, push = true) {
@@ -95,6 +109,14 @@ export const useStore = create((set, get) => {
       persist(S, push)
     },
     replaceState(S, push = false) { persist(clone(S), push) },
+
+    // Returns true/false rather than throwing — Settings just needs to know whether to toast
+    // success or "invalid code", not handle an exception for an everyday wrong-input case.
+    redeemGiftCode(code) {
+      if (!isValidGiftCode(code)) return false
+      get().update(s => { s.giftPremium = true })
+      return true
+    },
 
     isGuest: () => localStorage.getItem('gym_guest') === '1',
     setGuest(v) { if (v) localStorage.setItem('gym_guest', '1'); else localStorage.removeItem('gym_guest'); set({}) },
@@ -157,7 +179,10 @@ export const useStore = create((set, get) => {
         // Runs alongside nativeLoad() below rather than blocking on it — but `ready` still
         // waits (capped) for this, so an already-subscribed person's first frame doesn't flash
         // locked/paywalled content just because Play Billing's initial query hasn't landed yet.
-        const billingReady = initBilling(owned => set({ premium: owned }))
+        const billingReady = initBilling((owned, price) => {
+          billingOwned = owned
+          set({ premium: owned || !!get().S.giftPremium, premiumPrice: price })
+        })
         const saved = await nativeLoad()
         const S = get().S
         if (saved && (!hasData(S) || (saved._ts || 0) >= (S._ts || 0))) {

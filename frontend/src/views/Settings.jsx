@@ -11,7 +11,7 @@ import { t, LANGS, INSTR_LANGS } from '../lib/i18n.js'
 import { DEMO, REPO } from '../lib/demo.js'
 import { MOBILE, shareExport, syncReminder } from '../lib/mobile.js'
 import { YOUTUBE_MEDIA } from '../lib/exercises.js'
-import { restorePurchases, manageSubscriptionUrl, isBillingAvailable } from '../lib/billing.js'
+import { restorePurchases, manageSubscriptionUrl, isBillingAvailable, FALLBACK_PRICE } from '../lib/billing.js'
 import { loadStarterPlan, confirmSheet, importFromApp, paywallSheet } from '../sheets.jsx'
 import Icon from '../components/Icon.jsx'
 import { Section, Row, SelectRow, Switch, Segmented, Button, TextField } from '../components/ui.jsx'
@@ -20,12 +20,17 @@ export default function Settings() {
   const nav = useNavigate()
   const S = useStore(s => s.S)
   const user = useStore(s => s.user)
-  const { update, replaceState, setUser, pullState, pushState, signOut, signOutAll, resetDemo, premium } = useStore()
+  const { update, replaceState, setUser, pullState, pushState, signOut, signOutAll, resetDemo, premium, premiumPrice } = useStore()
   const toast = useUI(s => s.toast)
   const fileRef = useRef(null)
   const importRef = useRef(null)
   const wakeOK = wakeLockSupported()
   const [restoring, setRestoring] = useState(false)
+  // Gift codes (lib/giftcodes.js) have no visible entry point in the shipped app — a handful of
+  // people are handed a code privately, and reach the redeem sheet by tapping the "Loadout"
+  // footer 7× (the Android "unlock developer options" pattern). Nothing to discover for everyone
+  // else, no "get it free" button on the paywall.
+  const [footerTaps, setFooterTaps] = useState(0)
   const doRestore = async () => {
     if (restoring) return
     setRestoring(true)
@@ -69,6 +74,7 @@ export default function Settings() {
     catch (e) { if (e.name !== 'NotAllowedError' && e.name !== 'AbortError') toast(e.message || t('Sign-in failed')) }
   }
   const registerHere = () => useUI.getState().openSheet(close => <RegisterInline close={close} setUser={setUser} pushState={pushState} pullState={pullState} toast={toast} />)
+  const redeemHere = () => useUI.getState().openSheet(close => <GiftCodeSheet close={close} toast={toast} />)
   // Ends the profile's sessions on every device — this one included, so on success it lands in
   // the same place as the plain sign-out above (home, local data cleared). On failure nothing
   // local is touched: still signed in here, and say so rather than leaving a half-signed-out app.
@@ -93,10 +99,12 @@ export default function Settings() {
       {MOBILE ? <>
         <Row icon="lock" iconTint="var(--acc)" title={t('All data stays on this phone')} subtitle={t('No account, no cloud — back it up anytime with Export below.')} />
         {YOUTUBE_MEDIA && (premium
-          ? <Row icon="crown" iconTint="var(--acc)" title={t('Loadout Premium')} subtitle={t('Active — manage or cancel anytime in Google Play.')} accessory="chevron"
-            onClick={() => window.open(manageSubscriptionUrl(), '_blank', 'noopener')} />
+          ? <Row icon="crown" iconTint="var(--acc)" title={t('Loadout Premium')}
+            subtitle={S.giftPremium ? t('Active — a gift, free forever.') : t('Active — manage or cancel anytime in Google Play.')}
+            accessory={S.giftPremium ? undefined : 'chevron'}
+            onClick={S.giftPremium ? undefined : () => window.open(manageSubscriptionUrl(), '_blank', 'noopener')} />
           : <>
-            <Row icon="crown" iconTint="var(--acc)" title={t('Unlock Loadout Premium')} subtitle={t('$3/month · full library, every starter plan')} accessory="chevron"
+            <Row icon="crown" iconTint="var(--acc)" title={t('Unlock Loadout Premium')} subtitle={t('{0}/month · full library, every starter plan', premiumPrice || FALLBACK_PRICE)} accessory="chevron"
               onClick={() => paywallSheet()} />
             {isBillingAvailable() && <Row icon="reset" iconTint="var(--grey)" title={t('Restore purchase')} subtitle={restoring ? t('Checking…') : t('Already subscribed on another device?')}
               accessory="chevron" onClick={doRestore} />}
@@ -223,7 +231,11 @@ export default function Settings() {
     </Section>}
 
     <div className="dim small" style={{ textAlign: 'center', marginTop: 4, lineHeight: 1.6 }}>
-      Loadout · {t('free & open source (AGPL v3)')}<br />
+      <span onClick={() => {
+        if (!YOUTUBE_MEDIA || premium) return
+        const n = footerTaps + 1
+        if (n >= 7) { setFooterTaps(0); redeemHere() } else setFooterTaps(n)
+      }}>Loadout</span> · {t('open source (AGPL v3)')}<br />
       <a href={REPO} target="_blank" rel="noopener">source code</a> · exercise data: hasaneyldrm/exercises-dataset (CC)
     </div>
   </div>
@@ -384,5 +396,24 @@ function RegisterInline({ close, setUser, pushState, pullState, toast }) {
       <div className="dim small" style={{ marginTop: 6 }}>{t('This app is invite-only — enter the code you were given.')}</div>
     </>}
     <div style={{ height: 12 }} /><Button variant="primary" onClick={go}>{t('Create passkey')}</Button>
+  </>
+}
+
+// Perpetual free Premium for a handful of people (lib/giftcodes.js) — one text field, one
+// button, nothing to sign in or install first. useStore.getState() rather than a hook here:
+// this sheet doesn't need to re-render on state changes, only to fire one action on tap.
+function GiftCodeSheet({ close, toast }) {
+  const [code, setCode] = useState('')
+  const redeem = () => {
+    if (useStore.getState().redeemGiftCode(code)) { close(); toast(t('Loadout Premium unlocked — enjoy!')) }
+    else toast(t('That code isn’t valid — check it and try again.'))
+  }
+  return <>
+    <h3>{t('Redeem gift code')}</h3>
+    <div className="muted small" style={{ marginBottom: 14 }}>{t('Someone gave you a code for free Loadout Premium. Enter it below.')}</div>
+    <input className="input" placeholder={t('Gift code')} maxLength={20} value={code}
+      onChange={e => setCode(e.target.value.toUpperCase())} style={{ letterSpacing: '.14em', fontWeight: 600, textAlign: 'center' }}
+      onKeyDown={e => e.key === 'Enter' && redeem()} />
+    <div style={{ height: 12 }} /><Button variant="primary" disabled={!code.trim()} onClick={redeem}>{t('Redeem')}</Button>
   </>
 }
