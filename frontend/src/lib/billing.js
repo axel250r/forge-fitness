@@ -17,7 +17,7 @@ export const PACKAGE_ID = 'com.loadoutfit.app'
 // store-localized price — practically never seen (boot() waits on that query). Keep roughly in
 // step with the CLP price set in Play Console so the flash isn't jarring; nothing charges from
 // this value.
-export const FALLBACK_PRICE = '$4.990'
+export const FALLBACK_PRICE = '$5.000'
 
 // The plugin only exists in the native Capacitor/Android build (window.CdvPurchase is never
 // defined in the browser or the self-hosted web build) — every export here is a safe no-op
