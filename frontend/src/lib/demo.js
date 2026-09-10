@@ -11,4 +11,7 @@
 // lands in a self-hosted bundle.
 export const DEMO = import.meta.env.VITE_DEMO === '1'
 export const DEMO_SEEDED = 'gym_demo_seeded_v1'
-export const REPO = 'https://github.com/DuarteSantos8/openGym'
+// This fork's public source — the "source code" link in Settings points here, which is what
+// the AGPL (and NOTICE.md's app-store exception) requires: the corresponding source of what
+// ships must stay publicly available. Keep this repo public.
+export const REPO = 'https://github.com/axel250r/forge-fitness'
