@@ -603,6 +603,7 @@ export default {
   "3x/week · bodyweight + dumbbells · Mon · Wed · Fri": "3 раза/нед · вес тела + гантели · Пн · Ср · Пт",
   "{0} full workouts, one video each": "{0} полноценных тренировок, по одному видео на каждую",
   "No time for a full logged workout? Pick one of these and follow along — it opens straight in YouTube, no setup here.": "Нет времени на полноценную тренировку с записью? Выберите одну из них и занимайтесь по видео — оно откроется прямо в YouTube, здесь ничего настраивать не нужно.",
+  "Core": "Кор",
   "Something went wrong — try again.": "Что-то пошло не так — попробуйте снова.",
   "Nice": "Отлично",
   "Processing…": "Обработка…",

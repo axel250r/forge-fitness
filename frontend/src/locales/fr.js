@@ -603,6 +603,7 @@ export default {
   "3x/week · bodyweight + dumbbells · Mon · Wed · Fri": "3x/semaine · poids du corps + haltères · Lun · Mer · Ven",
   "{0} full workouts, one video each": "{0} séances complètes, une vidéo chacune",
   "No time for a full logged workout? Pick one of these and follow along — it opens straight in YouTube, no setup here.": "Pas le temps pour une séance complète enregistrée ? Choisissez-en une et suivez-la — elle s'ouvre directement dans YouTube, rien à configurer ici.",
+  "Core": "Gainage",
   "Something went wrong — try again.": "Algo a mal tourné — réessayez.",
   "Nice": "Super",
   "Processing…": "Traitement en cours…",

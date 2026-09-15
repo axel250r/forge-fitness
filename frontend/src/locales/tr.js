@@ -603,6 +603,7 @@ export default {
   "3x/week · bodyweight + dumbbells · Mon · Wed · Fri": "Haftada 3x · vücut ağırlığı + dambıl · Pzt · Çar · Cum",
   "{0} full workouts, one video each": "{0} tam antrenman, her biri tek video",
   "No time for a full logged workout? Pick one of these and follow along — it opens straight in YouTube, no setup here.": "Kayıtlı tam bir antrenman için vaktin mi yok? Bunlardan birini seç ve takip et — doğrudan YouTube'da açılır, burada ayarlanacak bir şey yok.",
+  "Core": "Core",
   "Something went wrong — try again.": "Bir şeyler ters gitti — tekrar dene.",
   "Nice": "Harika",
   "Processing…": "İşleniyor…",

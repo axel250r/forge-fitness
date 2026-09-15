@@ -603,6 +603,7 @@ export default {
   "3x/week · bodyweight + dumbbells · Mon · Wed · Fri": "सप्ताह में 3x · शरीर का वज़न + डम्बल · सोम · बुध · शुक्र",
   "{0} full workouts, one video each": "{0} पूरे वर्कआउट, हर एक के लिए एक वीडियो",
   "No time for a full logged workout? Pick one of these and follow along — it opens straight in YouTube, no setup here.": "पूरा वर्कआउट रिकॉर्ड करने का समय नहीं है? इनमें से एक चुनें और साथ करें — यह सीधे YouTube में खुलता है, यहां कुछ भी सेट नहीं करना है।",
+  "Core": "कोर",
   "Something went wrong — try again.": "कुछ गड़बड़ हो गई — फिर से कोशिश करें।",
   "Nice": "बढ़िया",
   "Processing…": "प्रोसेस हो रहा है…",

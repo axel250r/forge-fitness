@@ -35,6 +35,18 @@ export const SESSIONS = [
   { id: 'plyo-cardio-20', query: '20 minute plyometric jump workout no equipment', videoDuration: 'medium' },
   { id: 'pilates-core-20', query: '20 minute pilates core workout no equipment', videoDuration: 'medium' },
   { id: 'dumbbell-full-body-30', query: '30 minute dumbbell full body workout at home', videoDuration: 'long' },
+  { id: 'core-standing-10', query: '10 minute standing core workout no floor exercises', videoDuration: 'medium' },
+  { id: 'obliques-15', query: '15 minute obliques workout no equipment', videoDuration: 'medium' },
+  { id: 'core-beginner-10', query: '10 minute core workout for beginners no equipment', videoDuration: 'medium' },
+  { id: 'dance-cardio-25', query: '25 minute dance cardio workout no equipment', videoDuration: 'medium' },
+  { id: 'kickboxing-cardio-20', query: '20 minute kickboxing cardio workout no equipment', videoDuration: 'medium' },
+  { id: 'hip-mobility-10', query: '10 minute hip mobility routine', videoDuration: 'medium' },
+  { id: 'morning-stretch-10', query: '10 minute morning stretch routine full body', videoDuration: 'medium' },
+  { id: 'arms-15', query: '15 minute arms toning workout no equipment', videoDuration: 'medium' },
+  { id: 'shoulders-10', query: '10 minute shoulder workout no equipment', videoDuration: 'medium' },
+  { id: 'legs-burn-20', query: '20 minute leg workout no equipment burn', videoDuration: 'medium' },
+  { id: 'inner-thigh-15', query: '15 minute inner thigh workout no equipment', videoDuration: 'medium' },
+  { id: 'full-body-hiit-25', query: '25 minute full body HIIT workout no equipment', videoDuration: 'medium' },
 ]
 
 let resolved = {}

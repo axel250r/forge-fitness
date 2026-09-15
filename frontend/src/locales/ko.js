@@ -603,6 +603,7 @@ export default {
   "3x/week · bodyweight + dumbbells · Mon · Wed · Fri": "주 3회 · 맨몸 + 덤벨 · 월 · 수 · 금",
   "{0} full workouts, one video each": "영상 하나로 끝내는 전체 운동 {0}개",
   "No time for a full logged workout? Pick one of these and follow along — it opens straight in YouTube, no setup here.": "기록하는 전체 운동을 할 시간이 없나요? 이 중 하나를 골라 따라 하세요 — 바로 유튜브에서 열리며, 여기서 설정할 건 없습니다.",
+  "Core": "코어",
   "Something went wrong — try again.": "문제가 발생했습니다 — 다시 시도하세요.",
   "Nice": "좋아요",
   "Processing…": "처리 중…",

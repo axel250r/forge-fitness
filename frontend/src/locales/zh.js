@@ -603,6 +603,7 @@ export default {
   "3x/week · bodyweight + dumbbells · Mon · Wed · Fri": "每周3次 · 自重+哑铃 · 周一 · 周三 · 周五",
   "{0} full workouts, one video each": "{0} 个完整训练，每个一段视频",
   "No time for a full logged workout? Pick one of these and follow along — it opens straight in YouTube, no setup here.": "没时间做完整记录的训练？选一个跟着练——直接在 YouTube 中打开，这里无需任何设置。",
+  "Core": "核心",
   "Something went wrong — try again.": "出了点问题——请重试。",
   "Nice": "太好了",
   "Processing…": "处理中…",
