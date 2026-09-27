@@ -28,15 +28,23 @@ let owned = false
 let ready = false
 let price = null
 
-// Reads the live, store-localized price (e.g. "$4.990" for a Chilean account, "$5.25" for a US
-// one) straight off the product Play just sent us — never hardcoded, so it always matches
-// whatever's configured in Play Console's Monetization section, in the viewer's own currency,
-// and never goes stale if that price changes later.
+// The price shown in the paywall is the ongoing, post-trial price — never a free-trial phase's
+// $0, which product.pricing (offers[0].pricingPhases[0]) could easily land on the moment a free
+// trial offer exists, since Play doesn't guarantee offer order. Walks every offer looking for a
+// non-trial phase; same "$4.990"/"$5.25"-style live, store-localized string either way.
+function recurringPrice(product) {
+  for (const offer of product?.offers || []) {
+    const phase = offer.pricingPhases?.find(p => p.paymentMode !== 'FreeTrial')
+    if (phase) return phase.price
+  }
+  return product?.pricing?.price || null
+}
+
 function refreshOwned(onChange) {
   const { store } = window.CdvPurchase
   const product = store.get(PRODUCT_ID)
   const next = !!product?.owned
-  const nextPrice = product?.pricing?.price || null
+  const nextPrice = recurringPrice(product)
   if (next === owned && nextPrice === price) return
   owned = next
   price = nextPrice
@@ -77,7 +85,12 @@ export function purchase() {
   if (!AVAILABLE) return Promise.reject(new Error('Billing not available on this build'))
   const { store } = window.CdvPurchase
   const product = store.get(PRODUCT_ID)
-  const offer = product?.getOffer()
+  // Play doesn't guarantee offer order (product.getOffer() with no id is just offers[0]), so a
+  // free-trial offer configured in Play Console's Monetization section could otherwise end up
+  // ignored half the time. Prefer whichever offer actually has a FreeTrial pricing phase —
+  // falls back to the default offer for anyone Play doesn't consider trial-eligible (e.g. a
+  // past subscriber), same as before this existed.
+  const offer = product?.offers?.find(o => o.pricingPhases?.some(p => p.paymentMode === 'FreeTrial')) || product?.getOffer()
   if (!offer) return Promise.reject(new Error('Subscription offer not loaded yet'))
   return store.order(offer)
 }
