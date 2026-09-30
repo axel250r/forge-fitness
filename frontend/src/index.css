@@ -652,11 +652,12 @@ h4.sec{
 #timer.rest .acts .btn{padding-top:11px;padding-bottom:11px}   /* sweaty hands, mid-set */
 #timer.rest .acts .skip{margin-left:auto;min-width:84px}
 /* work timer (issue #16): the same bar doing the opposite job — outlined and tinted so a
-   glance tells "you are holding this" apart from "you are recovering". */
+   glance tells "you are holding this" apart from "you are recovering". Both variants' .lbl
+   share this look; .rest's is a fixed "Rest", .working's is the exercise name. */
 #timer.working{border:var(--hair) solid var(--acc)}
 #timer.working .t{color:var(--acc)}
 #timer.working .grow{flex:1;min-width:0}
-#timer.working .lbl{
+#timer.rest .lbl,#timer.working .lbl{
   font-size:12px;color:var(--label-2);margin-bottom:5px;text-transform:capitalize;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }

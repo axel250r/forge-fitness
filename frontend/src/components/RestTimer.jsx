@@ -8,7 +8,9 @@ const clock = sec => Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '
 // One bar, two meanings: the rest countdown between sets, and the work countdown during a
 // timed set (issue #16). They are mutually exclusive by construction — startWork() stops any
 // running rest — so the bar can never have to show both, and a work set gets its own colour
-// plus a "Done" that logs the time actually held.
+// plus a "Done" that logs the time actually held. Both now carry a plain-text label (a tester
+// flagged the bare countdown as ambiguous — "rest, or is it timing the exercise?") — the work
+// variant already had one optionally (its exercise name), the rest variant gets a fixed "Rest".
 export default function RestTimer() {
   const timer = useUI(s => s.timer)
   const work = useUI(s => s.work)
@@ -40,6 +42,7 @@ export default function RestTimer() {
   // order; Skip is pushed to the far edge, away from the button you tap to buy more time.
   return (
     <div id="timer" className="rest">
+      <div className="lbl">{t('Rest')}</div>
       <div className="head">
         <div className="t">{clock(timer.left)}</div>
         <div className="bar"><i style={{ width: pct + '%' }} /></div>
