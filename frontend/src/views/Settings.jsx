@@ -27,7 +27,7 @@ export default function Settings() {
   const wakeOK = wakeLockSupported()
   const [restoring, setRestoring] = useState(false)
   // Gift codes (lib/giftcodes.js) have no visible entry point in the shipped app — a handful of
-  // people are handed a code privately, and reach the redeem sheet by tapping the "Loadout"
+  // people are handed a code privately, and reach the redeem sheet by tapping the "VigorUp"
   // footer 7× (the Android "unlock developer options" pattern). Nothing to discover for everyone
   // else, no "get it free" button on the paywall.
   const [footerTaps, setFooterTaps] = useState(0)
@@ -47,7 +47,7 @@ export default function Settings() {
 
   const doExport = async () => {
     const json = JSON.stringify(S, null, 2)
-    const name = 'loadout-backup-' + todayISO() + '.json'
+    const name = 'vigorup-backup-' + todayISO() + '.json'
     // WKWebView can't download blob URLs — the native build hands the file to the share sheet.
     if (MOBILE) {
       try { await shareExport(json, name); toast(t('Backup exported')) } catch (e) { /* share sheet dismissed */ }
@@ -63,7 +63,7 @@ export default function Settings() {
     rd.onload = () => {
       try {
         const data = JSON.parse(rd.result)
-        if (!data.workouts || !data.routines) throw new Error('not a Loadout backup')
+        if (!data.workouts || !data.routines) throw new Error('not a VigorUp backup')
         confirmSheet({ title: t('Import backup?'), message: t('This replaces all current data with the backup file.'), confirmText: t('Import'), danger: true, onConfirm: () => { replaceState(Object.assign(JSON.parse(JSON.stringify(DEF)), data), true); toast(t('Backup imported')) } })
       } catch (e) { toast(t('Import failed: {0}', e.message)) }
     }
@@ -99,12 +99,12 @@ export default function Settings() {
       {MOBILE ? <>
         <Row icon="lock" iconTint="var(--acc)" title={t('All data stays on this phone')} subtitle={t('No account, no cloud — back it up anytime with Export below.')} />
         {YOUTUBE_MEDIA && (premium
-          ? <Row icon="crown" iconTint="var(--acc)" title={t('Loadout Premium')}
+          ? <Row icon="crown" iconTint="var(--acc)" title={t('VigorUp Premium')}
             subtitle={S.giftPremium ? t('Active — a gift, free forever.') : t('Active — manage or cancel anytime in Google Play.')}
             accessory={S.giftPremium ? undefined : 'chevron'}
             onClick={S.giftPremium ? undefined : () => window.open(manageSubscriptionUrl(), '_blank', 'noopener')} />
           : <>
-            <Row icon="crown" iconTint="var(--acc)" title={t('Unlock Loadout Premium')} subtitle={t('{0}/month · full library, every starter plan', premiumPrice || FALLBACK_PRICE)} accessory="chevron"
+            <Row icon="crown" iconTint="var(--acc)" title={t('Unlock VigorUp Premium')} subtitle={t('{0}/month · full library, every starter plan', premiumPrice || FALLBACK_PRICE)} accessory="chevron"
               onClick={() => paywallSheet()} />
             {isBillingAvailable() && <Row icon="reset" iconTint="var(--grey)" title={t('Restore purchase')} subtitle={restoring ? t('Checking…') : t('Already subscribed on another device?')}
               accessory="chevron" onClick={doRestore} />}
@@ -235,7 +235,7 @@ export default function Settings() {
         if (!YOUTUBE_MEDIA || premium) return
         const n = footerTaps + 1
         if (n >= 7) { setFooterTaps(0); redeemHere() } else setFooterTaps(n)
-      }}>Loadout</span> · {t('open source (AGPL v3)')}<br />
+      }}>VigorUp</span> · {t('open source (AGPL v3)')}<br />
       <a href={REPO} target="_blank" rel="noopener">source code</a> · exercise data: hasaneyldrm/exercises-dataset (CC)
     </div>
   </div>
@@ -348,7 +348,7 @@ function PushCard({ S, update, toast }) {
           (S.reminder?.tz ? ' ' + t('Timezone: {0} (auto-detected, updates if you travel).', S.reminder.tz) : '')
         : null}
     >
-      <Row icon="bell" iconTint="var(--red)" title={t('Push notifications')} subtitle={t('Rest-timer alerts, even if Loadout is closed.')}>
+      <Row icon="bell" iconTint="var(--red)" title={t('Push notifications')} subtitle={t('Rest-timer alerts, even if VigorUp is closed.')}>
         <Switch checked={on} disabled={busy} onChange={toggle} />
       </Row>
       {on && (
@@ -405,12 +405,12 @@ function RegisterInline({ close, setUser, pushState, pullState, toast }) {
 function GiftCodeSheet({ close, toast }) {
   const [code, setCode] = useState('')
   const redeem = () => {
-    if (useStore.getState().redeemGiftCode(code)) { close(); toast(t('Loadout Premium unlocked — enjoy!')) }
+    if (useStore.getState().redeemGiftCode(code)) { close(); toast(t('VigorUp Premium unlocked — enjoy!')) }
     else toast(t('That code isn’t valid — check it and try again.'))
   }
   return <>
     <h3>{t('Redeem gift code')}</h3>
-    <div className="muted small" style={{ marginBottom: 14 }}>{t('Someone gave you a code for free Loadout Premium. Enter it below.')}</div>
+    <div className="muted small" style={{ marginBottom: 14 }}>{t('Someone gave you a code for free VigorUp Premium. Enter it below.')}</div>
     <input className="input" placeholder={t('Gift code')} maxLength={20} value={code}
       onChange={e => setCode(e.target.value.toUpperCase())} style={{ letterSpacing: '.14em', fontWeight: 600, textAlign: 'center' }}
       onKeyDown={e => e.key === 'Enter' && redeem()} />

@@ -94,7 +94,7 @@ export const useStore = create((set, get) => {
     S: (() => { const s = loadState(); registerCustom(s.customEx); return s })(),
     user: (() => { try { return JSON.parse(localStorage.getItem('gym_user')) || null } catch { return null } })(),
     ready: false,
-    // Effective live Loadout Premium status: real Play Billing ownership OR a redeemed gift code
+    // Effective live VigorUp Premium status: real Play Billing ownership OR a redeemed gift code
     // (S.giftPremium, see redeemGiftCode below). Deliberately NOT part of S itself — recomputed
     // in persist()/the billing callback above rather than trusted verbatim from localStorage or
     // a restored backup, since the billing half of it never lives in S.

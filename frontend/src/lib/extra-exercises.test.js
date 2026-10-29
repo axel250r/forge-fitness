@@ -5,7 +5,7 @@ import { EXDB as UPSTREAM } from './exercises-data.js'
 import { modeOf, defaultConfig } from './history.js'
 import es from '../locales/es.js'
 
-describe('Loadout-written exercises', () => {
+describe('VigorUp-written exercises', () => {
   it('have unique ids that never collide with the upstream dataset', () => {
     const ids = EXTRA_EXERCISES.map(e => e.id)
     expect(new Set(ids).size).toBe(ids.length)

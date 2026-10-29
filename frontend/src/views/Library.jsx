@@ -19,7 +19,7 @@ export default function Library() {
   const nav = useNavigate()
   const S = useStore(s => s.S)
   const update = useStore(s => s.update)
-  useStore(s => s.premium) // re-render when Loadout Premium status changes (lib/paywall.js isLocked)
+  useStore(s => s.premium) // re-render when VigorUp Premium status changes (lib/paywall.js isLocked)
   const [q, setQ] = useState('')
   const [bp, setBp] = useState('')
   const [eq, setEq] = useState('')

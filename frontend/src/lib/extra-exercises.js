@@ -1,4 +1,4 @@
-// Loadout's own exercises, kept apart from the generated upstream dataset (exercises-data.js)
+// VigorUp's own exercises, kept apart from the generated upstream dataset (exercises-data.js)
 // so a dataset refresh never touches them. They use the same shape, plus a few optional fields:
 //   hold  — a static hold: a new plan entry starts in Time mode (lib/history.js modeOf)
 //   hs    — default hold, in seconds
@@ -357,13 +357,13 @@ export const exSections = ex => [...(ex.secs || []), ...(TAGS[ex.id] || [])]
 
 // Shown above the list while the pregnancy section is open — and the reason every prenatal
 // exercise is optional, slow and easy to skip. The videos are third-party YouTube content that
-// Loadout links to but does not make or review, and the notice says so.
+// VigorUp links to but does not make or review, and the notice says so.
 export const PRENATAL_NOTICE =
-  'General information, not medical advice. Always check with your doctor or midwife before doing any of these exercises, especially if you have any complication. Loadout is not responsible for any injury or harm that results from doing them: you exercise at your own risk. Keep a pace where you can still talk, avoid overheating, and avoid lying flat on your back for long periods as your pregnancy advances. Stop and get medical help if you feel pain, dizziness, shortness of breath, vaginal bleeding or fluid leaking, regular contractions, or calf pain or swelling. Videos are made by independent creators on YouTube; Loadout does not produce or review them.'
+  'General information, not medical advice. Always check with your doctor or midwife before doing any of these exercises, especially if you have any complication. VigorUp is not responsible for any injury or harm that results from doing them: you exercise at your own risk. Keep a pace where you can still talk, avoid overheating, and avoid lying flat on your back for long periods as your pregnancy advances. Stop and get medical help if you feel pain, dizziness, shortness of breath, vaginal bleeding or fluid leaking, regular contractions, or calf pain or swelling. Videos are made by independent creators on YouTube; VigorUp does not produce or review them.'
 
 // Lighter notices for the other two sections, shown the same way.
 export const PELVIC_NOTICE =
-  'General information, not medical advice. If you have pelvic pain, a prolapse, had recent surgery or are recovering from childbirth, check with your doctor or a pelvic floor physiotherapist before starting. Stop if you feel pain. Videos are made by independent creators on YouTube; Loadout does not produce or review them.'
+  'General information, not medical advice. If you have pelvic pain, a prolapse, had recent surgery or are recovering from childbirth, check with your doctor or a pelvic floor physiotherapist before starting. Stop if you feel pain. Videos are made by independent creators on YouTube; VigorUp does not produce or review them.'
 export const ISOMETRIC_NOTICE =
   'Breathe steadily and never hold your breath during a hold. If you have high blood pressure, a heart condition or an injury, check with your doctor first. Stop if you feel pain, dizziness or chest discomfort.'
 
@@ -381,4 +381,4 @@ export const SECTION_OF_FOCUS = { Isometric: 'isometric', 'Pelvic floor': 'pelvi
 // Repeated on each prenatal exercise's own sheet, for whoever reaches it through search or a plan
 // instead of through the section.
 export const PRENATAL_SHORT =
-  'Pregnancy exercise: check with your doctor or midwife before doing it. Loadout is not responsible for any harm that results from doing it.'
+  'Pregnancy exercise: check with your doctor or midwife before doing it. VigorUp is not responsible for any harm that results from doing it.'

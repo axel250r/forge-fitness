@@ -23,7 +23,7 @@ export default function QuickSessions() {
   const special = params.get('group') === 'special'
   const sessions = special ? SPECIAL_SESSIONS : QUICK_SESSIONS
   const focuses = special ? SPECIAL_SESSION_FOCUSES : QUICK_SESSION_FOCUSES
-  useStore(s => s.premium) // re-render when Loadout Premium status changes (lib/paywall.js isQuickSessionLocked)
+  useStore(s => s.premium) // re-render when VigorUp Premium status changes (lib/paywall.js isQuickSessionLocked)
   // Focus filter, same chip pattern as Library's body-part filter — kept local to this screen,
   // not derived from the exercise library's own categories.
   // The specialized sessions have no "All" view: each focus carries its own safety notice, so

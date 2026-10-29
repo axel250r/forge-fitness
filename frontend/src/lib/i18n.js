@@ -37,7 +37,7 @@ export function t(s, ...args) {
   return v
 }
 // Instructions for an exercise in the current language (English steps as fallback). An
-// exercise Loadout wrote itself carries its own translations in ex.i18n (lib/extra-exercises.js)
+// exercise VigorUp wrote itself carries its own translations in ex.i18n (lib/extra-exercises.js)
 // instead of living in the generated packs.
 export const hasOwnTranslation = ex => !!(ex.i18n && ex.i18n[lang])
 export const instrFor = ex => (instr && instr[ex.id]) || (ex.i18n && ex.i18n[lang] && ex.i18n[lang].st) || ex.st || []

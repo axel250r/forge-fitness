@@ -60,7 +60,7 @@ const SESSIONS = [
   { id: 'quads-15', focus: 'Lower Body', minutes: 15, free: false },
   { id: 'calves-10', focus: 'Lower Body', minutes: 10, free: false },
   { id: 'lower-body-burn-25', focus: 'Lower Body', minutes: 25, free: false },
-  // Specialized sessions: the same follow-along format for Loadout's own library sections
+  // Specialized sessions: the same follow-along format for VigorUp's own library sections
   // (lib/extra-exercises.js). They get their own screen so they don't get lost among the
   // short workouts. One free taste of each, like the exercise library.
   { id: 'iso-full-15', focus: 'Isometric', minutes: 15, free: true },

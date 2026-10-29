@@ -1,6 +1,6 @@
 {
-  "name": "Loadout",
-  "short_name": "Loadout",
+  "name": "VigorUp",
+  "short_name": "VigorUp",
   "description": "Personal gym & body weight tracker",
   "start_url": "./",
   "scope": "./",

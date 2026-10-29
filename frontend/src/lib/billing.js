@@ -1,4 +1,4 @@
-// Google Play Billing (Loadout Premium) via cordova-plugin-purchase, which wraps the native
+// Google Play Billing (VigorUp Premium) via cordova-plugin-purchase, which wraps the native
 // Play Billing Library. The actual price is never hardcoded here — it's whatever's configured
 // for PRODUCT_ID in Play Console's Monetization section, read live off the product and mirrored
 // into useStore's `premiumPrice` (FALLBACK_PRICE is only the pre-load placeholder).

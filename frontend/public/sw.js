@@ -1,6 +1,6 @@
-/* Loadout service worker — runtime caching (works with Vite's hashed asset names).
+/* VigorUp service worker — runtime caching (works with Vite's hashed asset names).
    Media (img/gif) cache-first; everything else network-first with offline fallback. */
-const CACHE = 'loadout-rt-v1'
+const CACHE = 'vigorup-rt-v1'
 
 self.addEventListener('install', () => self.skipWaiting())
 self.addEventListener('activate', e => {
@@ -10,11 +10,11 @@ self.addEventListener('activate', e => {
 })
 self.addEventListener('push', e => {
   const data = e.data ? e.data.json() : {}
-  e.waitUntil(self.registration.showNotification(data.title || 'Loadout', {
+  e.waitUntil(self.registration.showNotification(data.title || 'VigorUp', {
     body: data.body || '',
     icon: 'icons/icon-512.webp',
     badge: 'icons/icon-192.webp',
-    tag: data.tag || 'loadout',
+    tag: data.tag || 'vigorup',
     renotify: true
   }))
 })

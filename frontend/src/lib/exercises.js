@@ -3,7 +3,7 @@ import { EXTRA_EXERCISES } from './extra-exercises.js'
 import { t } from './i18n.js'
 import EXERCISE_VIDEOS from './exercise-videos.json'
 
-// The generated upstream catalogue plus Loadout's own exercises (lib/extra-exercises.js).
+// The generated upstream catalogue plus VigorUp's own exercises (lib/extra-exercises.js).
 export const EXDB = [...UPSTREAM_EXDB, ...EXTRA_EXERCISES]
 export const EXIDX = {}
 EXDB.forEach(e => { EXIDX[e.id] = e })
