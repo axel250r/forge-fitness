@@ -625,4 +625,18 @@ export default {
   "Redeem": "रिडीम करें",
   "Loadout Premium unlocked — enjoy!": "Loadout Premium अनलॉक हो गया — इसका आनंद लें!",
   "That code isn’t valid — check it and try again.": "यह कोड मान्य नहीं है — इसे जांचें और फिर से प्रयास करें।",
+  // Library sections and specialized sessions (lib/extra-exercises.js, lib/quick-sessions.js)
+  "Isometric": "आइसोमेट्रिक",
+  "Pelvic floor": "पेल्विक फ्लोर",
+  "Pregnancy": "गर्भावस्था",
+  "pelvic floor": "पेल्विक फ्लोर",
+  "hips": "कूल्हे",
+  "General information, not medical advice. Always check with your doctor or midwife before doing any of these exercises, especially if you have any complication. Loadout is not responsible for any injury or harm that results from doing them: you exercise at your own risk. Keep a pace where you can still talk, avoid overheating, and avoid lying flat on your back for long periods as your pregnancy advances. Stop and get medical help if you feel pain, dizziness, shortness of breath, vaginal bleeding or fluid leaking, regular contractions, or calf pain or swelling. Videos are made by independent creators on YouTube; Loadout does not produce or review them.": "यह सामान्य जानकारी है, चिकित्सकीय सलाह नहीं। इनमें से कोई भी व्यायाम करने से पहले हमेशा अपने डॉक्टर या दाई (मिडवाइफ) से सलाह लें, खासकर यदि आपको कोई जटिलता है। इन्हें करने से होने वाली किसी भी चोट या नुकसान के लिए Loadout जिम्मेदार नहीं है: व्यायाम आप अपने जोखिम पर करते हैं। ऐसी गति रखें जिसमें आप अब भी बात कर सकें, अधिक गर्मी से बचें, और गर्भावस्था आगे बढ़ने पर लंबे समय तक पीठ के बल सीधा लेटने से बचें। दर्द, चक्कर, सांस फूलना, योनि से रक्तस्राव या पानी का रिसाव, नियमित संकुचन, या पिंडली में दर्द या सूजन महसूस हो तो रुक जाएं और चिकित्सा सहायता लें। वीडियो YouTube पर स्वतंत्र क्रिएटर्स ने बनाए हैं; Loadout इन्हें न बनाता है, न इनकी समीक्षा करता है।",
+  "Pregnancy exercise: check with your doctor or midwife before doing it. Loadout is not responsible for any harm that results from doing it.": "गर्भावस्था का व्यायाम: इसे करने से पहले अपने डॉक्टर या दाई (मिडवाइफ) से सलाह लें। इसे करने से होने वाले किसी भी नुकसान के लिए Loadout जिम्मेदार नहीं है।",
+  "General information, not medical advice. If you have pelvic pain, a prolapse, had recent surgery or are recovering from childbirth, check with your doctor or a pelvic floor physiotherapist before starting. Stop if you feel pain. Videos are made by independent creators on YouTube; Loadout does not produce or review them.": "यह सामान्य जानकारी है, चिकित्सकीय सलाह नहीं। यदि आपको पेल्विक दर्द है, प्रोलैप्स है, हाल ही में सर्जरी हुई है या आप प्रसव के बाद ठीक हो रहे हैं, तो शुरू करने से पहले अपने डॉक्टर या पेल्विक फ्लोर फिजियोथेरेपिस्ट से सलाह लें। दर्द महसूस हो तो रुक जाएं। वीडियो YouTube पर स्वतंत्र क्रिएटर्स ने बनाए हैं; Loadout इन्हें न बनाता है, न इनकी समीक्षा करता है।",
+  "Breathe steadily and never hold your breath during a hold. If you have high blood pressure, a heart condition or an injury, check with your doctor first. Stop if you feel pain, dizziness or chest discomfort.": "सांस सामान्य रूप से लेते रहें और किसी मुद्रा को रोकते समय कभी सांस न रोकें। यदि आपको उच्च रक्तचाप, हृदय रोग या चोट है, तो पहले अपने डॉक्टर से सलाह लें। दर्द, चक्कर या सीने में बेचैनी महसूस हो तो रुक जाएं।",
+  "Specialized sessions": "विशेष सत्र",
+  "{0} follow-along videos": "{0} फॉलो-अलोंग वीडियो",
+  "{0} videos: isometric, pelvic floor and pregnancy": "{0} वीडियो: आइसोमेट्रिक, पेल्विक फ्लोर और गर्भावस्था",
+  "Follow-along videos for isometric holds, pelvic floor and pregnancy. Each one opens straight in YouTube.": "आइसोमेट्रिक होल्ड, पेल्विक फ्लोर और गर्भावस्था के लिए साथ-साथ करने वाले वीडियो। हर वीडियो सीधे YouTube में खुलता है।",
 }

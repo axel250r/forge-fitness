@@ -60,17 +60,44 @@ const SESSIONS = [
   { id: 'quads-15', focus: 'Lower Body', minutes: 15, free: false },
   { id: 'calves-10', focus: 'Lower Body', minutes: 10, free: false },
   { id: 'lower-body-burn-25', focus: 'Lower Body', minutes: 25, free: false },
+  // Specialized sessions: the same follow-along format for Loadout's own library sections
+  // (lib/extra-exercises.js). They get their own screen so they don't get lost among the
+  // short workouts. One free taste of each, like the exercise library.
+  { id: 'iso-full-15', focus: 'Isometric', minutes: 15, free: true },
+  { id: 'iso-no-repeat-15', focus: 'Isometric', minutes: 15, free: false },
+  { id: 'iso-core-10', focus: 'Isometric', minutes: 10, free: false },
+  { id: 'iso-wall-sit-10', focus: 'Isometric', minutes: 10, free: false },
+  { id: 'pf-beginner-10', focus: 'Pelvic floor', minutes: 10, free: true },
+  { id: 'pf-release-10', focus: 'Pelvic floor', minutes: 10, free: false },
+  { id: 'pf-deep-core-10', focus: 'Pelvic floor', minutes: 10, free: false },
+  { id: 'pf-abs-10', focus: 'Pelvic floor', minutes: 10, free: false },
+  { id: 'prenatal-all-15', focus: 'Pregnancy', minutes: 15, free: true },
+  { id: 'prenatal-yoga-15', focus: 'Pregnancy', minutes: 15, free: false },
+  { id: 'prenatal-pilates-10', focus: 'Pregnancy', minutes: 10, free: false },
+  { id: 'prenatal-stretch-15', focus: 'Pregnancy', minutes: 15, free: false },
+  { id: 'prenatal-full-30', focus: 'Pregnancy', minutes: 30, free: false },
+  { id: 'prenatal-sciatica-30', focus: 'Pregnancy', minutes: 30, free: false },
 ]
+
+// The specialized focuses are the Library sections of the same name (lib/extra-exercises.js
+// SECTIONS), in the order they appear there.
+export const SPECIAL_FOCUSES = ['Isometric', 'Pelvic floor', 'Pregnancy']
 
 // Merge in the resolved video — and drop anything the script hasn't resolved yet, rather than
 // show a card with nowhere to go.
-export const QUICK_SESSIONS = SESSIONS
+const RESOLVED = SESSIONS
   .map(s => ({ ...s, ...QUICK_SESSION_VIDEOS[s.id] }))
   .filter(s => s.videoId)
 
-// Distinct focus categories among the resolved sessions, in first-seen order (roughly biggest
-// group first) rather than alphabetical — reads better as filter chips than a random shuffle.
-export const QUICK_SESSION_FOCUSES = [...new Set(QUICK_SESSIONS.map(s => s.focus))]
+// "Short on time" is the regular workouts; the specialized ones live on their own screen.
+export const QUICK_SESSIONS = RESOLVED.filter(s => !SPECIAL_FOCUSES.includes(s.focus))
+export const SPECIAL_SESSIONS = RESOLVED.filter(s => SPECIAL_FOCUSES.includes(s.focus))
+
+// Filter chips in a fixed, readable order (whole body first, then regions, then style) rather
+// than whatever order the list happens to introduce them in; only those that have a session.
+const FOCUS_ORDER = ['Full Body', 'Upper Body', 'Lower Body', 'Core', 'Cardio', 'Mobility']
+export const QUICK_SESSION_FOCUSES = FOCUS_ORDER.filter(f => QUICK_SESSIONS.some(s => s.focus === f))
+export const SPECIAL_SESSION_FOCUSES = SPECIAL_FOCUSES.filter(f => SPECIAL_SESSIONS.some(s => s.focus === f))
 
 export const quickSessionUrl = s => `https://www.youtube.com/watch?v=${s.videoId}`
 export const quickSessionThumb = s => `https://img.youtube.com/vi/${s.videoId}/hqdefault.jpg`

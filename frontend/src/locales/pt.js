@@ -625,4 +625,18 @@ export default {
   "Redeem": "Resgatar",
   "Loadout Premium unlocked — enjoy!": "Loadout Premium desbloqueado — aproveite!",
   "That code isn’t valid — check it and try again.": "Código inválido — confira e tente novamente.",
+  // Library sections and specialized sessions (lib/extra-exercises.js, lib/quick-sessions.js)
+  "Isometric": "Isométricos",
+  "Pelvic floor": "Assoalho pélvico",
+  "Pregnancy": "Gravidez",
+  "pelvic floor": "assoalho pélvico",
+  "hips": "quadris",
+  "General information, not medical advice. Always check with your doctor or midwife before doing any of these exercises, especially if you have any complication. Loadout is not responsible for any injury or harm that results from doing them: you exercise at your own risk. Keep a pace where you can still talk, avoid overheating, and avoid lying flat on your back for long periods as your pregnancy advances. Stop and get medical help if you feel pain, dizziness, shortness of breath, vaginal bleeding or fluid leaking, regular contractions, or calf pain or swelling. Videos are made by independent creators on YouTube; Loadout does not produce or review them.": "Informações gerais, não são aconselhamento médico. Consulte sempre seu médico ou sua enfermeira obstetra antes de fazer qualquer um destes exercícios, principalmente se tiver alguma complicação. O Loadout não se responsabiliza por lesões ou danos decorrentes deles: você se exercita por sua conta e risco. Mantenha um ritmo em que ainda consiga conversar, evite o superaquecimento e evite ficar muito tempo deitada de costas conforme a gravidez avança. Pare e procure atendimento médico se sentir dor, tontura, falta de ar, sangramento vaginal ou perda de líquido, contrações regulares, ou dor ou inchaço na panturrilha. Os vídeos são feitos por criadores independentes no YouTube; o Loadout não os produz nem os revisa.",
+  "Pregnancy exercise: check with your doctor or midwife before doing it. Loadout is not responsible for any harm that results from doing it.": "Exercício para a gravidez: consulte seu médico ou sua enfermeira obstetra antes de fazê-lo. O Loadout não se responsabiliza por danos decorrentes dele.",
+  "General information, not medical advice. If you have pelvic pain, a prolapse, had recent surgery or are recovering from childbirth, check with your doctor or a pelvic floor physiotherapist before starting. Stop if you feel pain. Videos are made by independent creators on YouTube; Loadout does not produce or review them.": "Informações gerais, não são aconselhamento médico. Se você tem dor pélvica, prolapso, passou por cirurgia recente ou está se recuperando do parto, consulte seu médico ou um fisioterapeuta de assoalho pélvico antes de começar. Pare se sentir dor. Os vídeos são feitos por criadores independentes no YouTube; o Loadout não os produz nem os revisa.",
+  "Breathe steadily and never hold your breath during a hold. If you have high blood pressure, a heart condition or an injury, check with your doctor first. Stop if you feel pain, dizziness or chest discomfort.": "Respire de forma constante e nunca prenda a respiração durante uma sustentação. Se você tem pressão alta, doença cardíaca ou lesão, consulte seu médico antes. Pare se sentir dor, tontura ou desconforto no peito.",
+  "Specialized sessions": "Sessões especializadas",
+  "{0} follow-along videos": "{0} vídeos para acompanhar",
+  "{0} videos: isometric, pelvic floor and pregnancy": "{0} vídeos: isométricos, assoalho pélvico e gravidez",
+  "Follow-along videos for isometric holds, pelvic floor and pregnancy. Each one opens straight in YouTube.": "Vídeos para acompanhar de isométricos, assoalho pélvico e gravidez. Cada um abre direto no YouTube.",
 }

@@ -1,8 +1,10 @@
-import { EXDB } from './exercises-data.js'
+import { EXDB as UPSTREAM_EXDB } from './exercises-data.js'
+import { EXTRA_EXERCISES } from './extra-exercises.js'
 import { t } from './i18n.js'
 import EXERCISE_VIDEOS from './exercise-videos.json'
 
-export { EXDB }
+// The generated upstream catalogue plus Loadout's own exercises (lib/extra-exercises.js).
+export const EXDB = [...UPSTREAM_EXDB, ...EXTRA_EXERCISES]
 export const EXIDX = {}
 EXDB.forEach(e => { EXIDX[e.id] = e })
 export const BODYPARTS = [...new Set(EXDB.map(e => e.bp))].sort()
@@ -40,7 +42,7 @@ export const gifSrc = ex => GIF_BASE + ex.gif
 // YouTube search per exercise instead — no image rights to clear, nothing to host.
 export const YOUTUBE_MEDIA = import.meta.env.VITE_MEDIA_MODE === 'youtube'
 export const youtubeSearchUrl = ex =>
-  'https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.n + ' exercise form')
+  'https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.q || ex.n + ' exercise form')
 
 // One specific video per exercise, resolved offline by scripts/match-youtube-videos.mjs
 // (YouTube Data API, ~90/day free quota) — filled in gradually, so most exercises fall
@@ -57,6 +59,9 @@ export const youtubeWatchUrl = ex => {
 
 // Cardio exercises log time + speed instead of weight × reps.
 export const isCardio = idOrEx => (typeof idOrEx === 'string' ? EXIDX[idOrEx] : idOrEx)?.bp === 'cardio'
+
+// Static holds (a plank, a wall sit) start a new plan entry in Time mode instead of reps.
+export const isHold = idOrEx => !!(typeof idOrEx === 'string' ? EXIDX[idOrEx] : idOrEx)?.hold
 
 // Exercises the dataset already knows carry no external load (issue #32) — a quarter of the
 // catalogue. This seeds the `bw` flag on a fresh config so a push-up never asks for a weight

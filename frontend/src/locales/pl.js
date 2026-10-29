@@ -625,4 +625,18 @@ export default {
   "Redeem": "Wykorzystaj",
   "Loadout Premium unlocked — enjoy!": "Loadout Premium odblokowane — miłego treningu!",
   "That code isn’t valid — check it and try again.": "Ten kod jest nieprawidłowy — sprawdź go i spróbuj ponownie.",
+  // Library sections and specialized sessions (lib/extra-exercises.js, lib/quick-sessions.js)
+  "Isometric": "Izometryczne",
+  "Pelvic floor": "Dno miednicy",
+  "Pregnancy": "Ciąża",
+  "pelvic floor": "dno miednicy",
+  "hips": "biodra",
+  "General information, not medical advice. Always check with your doctor or midwife before doing any of these exercises, especially if you have any complication. Loadout is not responsible for any injury or harm that results from doing them: you exercise at your own risk. Keep a pace where you can still talk, avoid overheating, and avoid lying flat on your back for long periods as your pregnancy advances. Stop and get medical help if you feel pain, dizziness, shortness of breath, vaginal bleeding or fluid leaking, regular contractions, or calf pain or swelling. Videos are made by independent creators on YouTube; Loadout does not produce or review them.": "Informacje ogólne, nie porada medyczna. Zawsze skonsultuj się z lekarzem lub położną przed wykonaniem któregokolwiek z tych ćwiczeń, zwłaszcza jeśli masz jakiekolwiek powikłania. Loadout nie ponosi odpowiedzialności za urazy ani szkody wynikające z ich wykonywania: ćwiczysz na własne ryzyko. Utrzymuj tempo, przy którym nadal możesz rozmawiać, unikaj przegrzania i unikaj długiego leżenia płasko na plecach w miarę postępu ciąży. Przerwij i zasięgnij pomocy medycznej, jeśli poczujesz ból, zawroty głowy, duszność, krwawienie z pochwy lub wyciek płynu, regularne skurcze albo ból lub obrzęk łydki. Filmy tworzą niezależni twórcy w YouTube; Loadout ich nie produkuje ani nie weryfikuje.",
+  "Pregnancy exercise: check with your doctor or midwife before doing it. Loadout is not responsible for any harm that results from doing it.": "Ćwiczenie dla kobiet w ciąży: skonsultuj je z lekarzem lub położną przed wykonaniem. Loadout nie ponosi odpowiedzialności za szkody wynikające z jego wykonywania.",
+  "General information, not medical advice. If you have pelvic pain, a prolapse, had recent surgery or are recovering from childbirth, check with your doctor or a pelvic floor physiotherapist before starting. Stop if you feel pain. Videos are made by independent creators on YouTube; Loadout does not produce or review them.": "Informacje ogólne, nie porada medyczna. Jeśli masz ból miednicy, wypadanie narządów rodnych, niedawną operację lub dochodzisz do siebie po porodzie, skonsultuj się z lekarzem lub fizjoterapeutą dna miednicy przed rozpoczęciem. Przerwij, jeśli poczujesz ból. Filmy tworzą niezależni twórcy w YouTube; Loadout ich nie produkuje ani nie weryfikuje.",
+  "Breathe steadily and never hold your breath during a hold. If you have high blood pressure, a heart condition or an injury, check with your doctor first. Stop if you feel pain, dizziness or chest discomfort.": "Oddychaj równomiernie i nigdy nie wstrzymuj oddechu podczas utrzymywania pozycji. Jeśli masz nadciśnienie, chorobę serca lub kontuzję, najpierw skonsultuj się z lekarzem. Przerwij, jeśli poczujesz ból, zawroty głowy lub dyskomfort w klatce piersiowej.",
+  "Specialized sessions": "Sesje specjalistyczne",
+  "{0} follow-along videos": "Filmy do ćwiczeń: {0}",
+  "{0} videos: isometric, pelvic floor and pregnancy": "Filmy: {0} — izometria, dno miednicy i ciąża",
+  "Follow-along videos for isometric holds, pelvic floor and pregnancy. Each one opens straight in YouTube.": "Filmy do ćwiczeń razem z trenerem: pozycje izometryczne, dno miednicy i ciąża. Każdy otwiera się od razu w YouTube.",
 }

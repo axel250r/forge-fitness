@@ -625,4 +625,18 @@ export default {
   "Redeem": "사용",
   "Loadout Premium unlocked — enjoy!": "Loadout 프리미엄이 잠금 해제되었습니다 — 즐겨보세요!",
   "That code isn’t valid — check it and try again.": "유효하지 않은 코드입니다 — 확인 후 다시 시도하세요.",
+  // Library sections and specialized sessions (lib/extra-exercises.js, lib/quick-sessions.js)
+  "Isometric": "등척성 운동",
+  "Pelvic floor": "골반저근",
+  "Pregnancy": "임신",
+  "pelvic floor": "골반저근",
+  "hips": "고관절",
+  "General information, not medical advice. Always check with your doctor or midwife before doing any of these exercises, especially if you have any complication. Loadout is not responsible for any injury or harm that results from doing them: you exercise at your own risk. Keep a pace where you can still talk, avoid overheating, and avoid lying flat on your back for long periods as your pregnancy advances. Stop and get medical help if you feel pain, dizziness, shortness of breath, vaginal bleeding or fluid leaking, regular contractions, or calf pain or swelling. Videos are made by independent creators on YouTube; Loadout does not produce or review them.": "일반적인 정보이며 의학적 조언이 아닙니다. 이 운동을 하기 전에 반드시 의사나 조산사와 상담하세요. 합병증이 있다면 특히 그렇습니다. Loadout은 이 운동으로 인한 부상이나 피해에 대해 책임지지 않습니다. 운동은 본인의 책임하에 하세요. 대화가 가능한 정도의 속도를 유지하고, 과열을 피하며, 임신이 진행될수록 오랫동안 똑바로 누워 있는 것을 피하세요. 통증, 어지럼증, 숨 가쁨, 질 출혈이나 양수 유출, 규칙적인 진통, 종아리 통증이나 부기가 있으면 중단하고 의료 도움을 받으세요. 영상은 YouTube의 독립 크리에이터가 만든 것이며 Loadout은 이를 제작하거나 검토하지 않습니다.",
+  "Pregnancy exercise: check with your doctor or midwife before doing it. Loadout is not responsible for any harm that results from doing it.": "임신 중 운동: 하기 전에 의사나 조산사와 상담하세요. Loadout은 이 운동으로 인한 피해에 대해 책임지지 않습니다.",
+  "General information, not medical advice. If you have pelvic pain, a prolapse, had recent surgery or are recovering from childbirth, check with your doctor or a pelvic floor physiotherapist before starting. Stop if you feel pain. Videos are made by independent creators on YouTube; Loadout does not produce or review them.": "일반적인 정보이며 의학적 조언이 아닙니다. 골반 통증, 골반장기탈출증, 최근 수술, 출산 후 회복 중이라면 시작하기 전에 의사나 골반저근 물리치료사와 상담하세요. 통증이 느껴지면 중단하세요. 영상은 YouTube의 독립 크리에이터가 만든 것이며 Loadout은 이를 제작하거나 검토하지 않습니다.",
+  "Breathe steadily and never hold your breath during a hold. If you have high blood pressure, a heart condition or an injury, check with your doctor first. Stop if you feel pain, dizziness or chest discomfort.": "호흡을 고르게 유지하고, 자세를 유지하는 동안 절대 숨을 참지 마세요. 고혈압, 심장 질환 또는 부상이 있다면 먼저 의사와 상담하세요. 통증, 어지럼증 또는 가슴 불편감이 느껴지면 중단하세요.",
+  "Specialized sessions": "전문 세션",
+  "{0} follow-along videos": "따라 하는 영상 {0}개",
+  "{0} videos: isometric, pelvic floor and pregnancy": "영상 {0}개: 등척성, 골반저근, 임신",
+  "Follow-along videos for isometric holds, pelvic floor and pregnancy. Each one opens straight in YouTube.": "등척성 유지, 골반저근, 임신을 위한 따라 하기 영상입니다. 각 영상은 YouTube에서 바로 열립니다.",
 }

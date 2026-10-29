@@ -1,6 +1,6 @@
 // Pure helpers over the state object S (ported 1:1 from the vanilla app).
 import { todayISO, isoOf, weekKey, fmtNum } from './format.js'
-import { isCardio, isBodyweightEq } from './exercises.js'
+import { isCardio, isHold, isBodyweightEq, EXIDX } from './exercises.js'
 import { t } from './i18n.js'
 
 // How an exercise is logged (issue #16). This used to be derived from the body part alone,
@@ -14,7 +14,10 @@ import { t } from './i18n.js'
 export function modeOf(cfg) {
   const m = cfg && cfg.mode
   if (m === 'reps' || m === 'time' || m === 'cardio') return m
-  return isCardio(cfg && cfg.id) ? 'cardio' : 'reps'
+  if (isCardio(cfg && cfg.id)) return 'cardio'
+  // A static hold with no saved mode is timed; anything saved before holds existed has none
+  // of these ids, so no existing plan or workout changes meaning.
+  return isHold(cfg && cfg.id) ? 'time' : 'reps'
 }
 export const isTimed = cfg => modeOf(cfg) === 'time'
 
@@ -110,12 +113,17 @@ export function setLabel(id, s, cfg) {
 // Default config for a freshly added exercise.
 export function defaultConfig(id, mode) {
   const m = mode || modeOf({ id })
-  if (m === 'cardio') return { sets: 1, min: 20, speed: 8 }
+  // An exercise can carry its own starting point (dc), used only when the mode wasn't picked
+  // by hand: 20 min of easy walking at 4 km/h, 3 × 10 kegels, and so on. Upstream exercises
+  // have neither dc nor hs, so their defaults are exactly what they were.
+  const ex = EXIDX[id]
+  const own = (!mode && ex && ex.dc) || {}
+  if (m === 'cardio') return { sets: 1, min: 20, speed: 8, ...own }
   // Written only when it is true, so a barbell config is byte-for-byte what it was before
   // the flag existed and a plan file gains nothing it does not need.
   const bw = isBodyweightEq(id) ? { bodyweight: true } : {}
-  if (m === 'time') return { sets: 3, sec: 45, weight: 0, mode: 'time', ...bw }
-  return { sets: 3, reps: 10, weight: 0, mode: 'reps', ...bw }
+  if (m === 'time') return { sets: 3, sec: (ex && ex.hs) || 45, weight: 0, mode: 'time', ...bw, ...own }
+  return { sets: 3, reps: 10, weight: 0, mode: 'reps', ...bw, ...own }
 }
 // One-line summary of a planned exercise ("3 × 10 · 60 kg"), shared by the routine editor
 // and the plan export so a mode is described the same way everywhere.

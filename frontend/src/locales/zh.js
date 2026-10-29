@@ -625,4 +625,18 @@ export default {
   "Redeem": "兑换",
   "Loadout Premium unlocked — enjoy!": "Loadout Premium 已解锁——尽情训练吧！",
   "That code isn’t valid — check it and try again.": "该代码无效——请检查后重试。",
+  // Library sections and specialized sessions (lib/extra-exercises.js, lib/quick-sessions.js)
+  "Isometric": "等长训练",
+  "Pelvic floor": "盆底肌",
+  "Pregnancy": "孕期",
+  "pelvic floor": "盆底肌",
+  "hips": "髋部",
+  "General information, not medical advice. Always check with your doctor or midwife before doing any of these exercises, especially if you have any complication. Loadout is not responsible for any injury or harm that results from doing them: you exercise at your own risk. Keep a pace where you can still talk, avoid overheating, and avoid lying flat on your back for long periods as your pregnancy advances. Stop and get medical help if you feel pain, dizziness, shortness of breath, vaginal bleeding or fluid leaking, regular contractions, or calf pain or swelling. Videos are made by independent creators on YouTube; Loadout does not produce or review them.": "以下为一般性信息，不构成医疗建议。在做这些练习之前，请务必咨询你的医生或助产士，尤其是有任何并发症时。对于因进行这些练习而导致的任何伤害或损失，Loadout 概不负责：你需自行承担运动风险。保持仍能说话的运动强度，避免过热，并随着孕期推进避免长时间平躺仰卧。如出现疼痛、头晕、气短、阴道出血或漏液、规律宫缩，或小腿疼痛或肿胀，请停止并就医。视频由 YouTube 上的独立创作者制作，Loadout 不制作也不审核这些视频。",
+  "Pregnancy exercise: check with your doctor or midwife before doing it. Loadout is not responsible for any harm that results from doing it.": "孕期练习：做之前请先咨询你的医生或助产士。对于因此造成的任何损害，Loadout 概不负责。",
+  "General information, not medical advice. If you have pelvic pain, a prolapse, had recent surgery or are recovering from childbirth, check with your doctor or a pelvic floor physiotherapist before starting. Stop if you feel pain. Videos are made by independent creators on YouTube; Loadout does not produce or review them.": "以下为一般性信息，不构成医疗建议。如果你有盆腔疼痛、盆腔器官脱垂、近期做过手术或正在产后恢复，开始前请咨询医生或盆底物理治疗师。感到疼痛请停止。视频由 YouTube 上的独立创作者制作，Loadout 不制作也不审核这些视频。",
+  "Breathe steadily and never hold your breath during a hold. If you have high blood pressure, a heart condition or an injury, check with your doctor first. Stop if you feel pain, dizziness or chest discomfort.": "保持平稳呼吸，保持姿势时切勿憋气。如果你有高血压、心脏病或伤病，请先咨询医生。出现疼痛、头晕或胸部不适请停止。",
+  "Specialized sessions": "专项课程",
+  "{0} follow-along videos": "{0} 个跟练视频",
+  "{0} videos: isometric, pelvic floor and pregnancy": "{0} 个视频：等长训练、盆底肌和孕期",
+  "Follow-along videos for isometric holds, pelvic floor and pregnancy. Each one opens straight in YouTube.": "等长训练、盆底肌和孕期的跟练视频。每个都会直接在 YouTube 中打开。",
 }

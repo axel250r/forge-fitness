@@ -5,7 +5,8 @@ import { EXDB, EXIDX, BODYPARTS, isCardio, isBodyweightEq, isHomeFriendly, allEx
 import { fmtDate, fmtNum, fmtVol, fmtDur, durPart, todayISO, uid, exCount, DAYN, MONTHS_LONG, ACCENTS } from './lib/format.js'
 import { lastEntryFor, bestWeightFor, buildSets, effectiveRoutineId, workoutVolume, setsDone, setsDoneActive, lastBW, supersetUnits, unitOf, setLabel, defaultConfig, cleanupSg, modeOf, effortOf, isBw, isPerSide, sideReps } from './lib/history.js'
 import { beep, vibrate } from './lib/sound.js'
-import { t, instrFor, getLang, INSTR_LANGS } from './lib/i18n.js'
+import { t, instrFor, descFor, hasOwnTranslation, getLang, INSTR_LANGS } from './lib/i18n.js'
+import { exSections, PRENATAL_SHORT } from './lib/extra-exercises.js'
 import { nav } from './lib/nav.js'
 import { starterRoutines, STARTER_PLANS } from './lib/starter.js'
 import { isLocked, isStarterPlanLocked } from './lib/paywall.js'
@@ -455,16 +456,18 @@ function ExerciseDetail({ ex, close }) {
         <Button variant="primary" icon="crown" style={{ marginTop: 10 }} onClick={() => { close(); paywallSheet() }}>{t('Unlock Loadout Premium')}</Button>
       </div>
     ) : <>
+      {exSections(ex).includes('prenatal') && <div className="helptip" style={{ marginBottom: 10 }}><div className="helptip-row"><span className="helptip-i"><Icon name="heart" /></span><div className="helptip-body">{t(PRENATAL_SHORT)}</div></div></div>}
       <Media ex={ex} />
-      {ex.desc && <div className="exnote">{ex.desc}</div>}
+      {descFor(ex) && <div className="exnote">{descFor(ex)}</div>}
       {best > 0 && <div className="small row" style={{ marginBottom: 6, gap: 5 }}><Icon name="trophy" style={{ fontSize: 14, color: 'var(--yellow)' }} />{t('Best:')} <b className="accent">{fmtNum(best)} {st.unit}</b>{last ? ` · ${t('last')} ${fmtDate(last.d)}: ${last.sets.map(s => setLabel(ex.id, s, last.target)).join(', ')}` : ''}</div>}
       <Button variant="primary" icon="plus" style={{ margin: '10px 0 4px' }} onClick={() => addToRoutineSheet(ex)}>{t('Add to my plan')}</Button>
       {ex.custom && <div className="row" style={{ gap: 8, marginTop: 8 }}>
         <Button icon="pencil" style={{ flex: 1 }} onClick={() => { close(); customExSheet(ex) }}>{t('Edit')}</Button>
         <Button variant="danger" icon="trash" style={{ flex: 1 }} onClick={() => deleteCustomEx(ex, close)}>{t('Delete')}</Button>
       </div>}
-      {!isCardio(ex) && <OneRM ex={ex} />}
-      {instrFor(ex).length > 0 &&<><h4 className="sec">{t('How to')}{!INSTR_LANGS.includes(getLang()) && <span className="dim" style={{ textTransform: 'none', letterSpacing: 0 }}> · {t('instructions in English')}</span>}</h4><ol className="steps-list">{instrFor(ex).map((s, i) => <li key={i}>{s}</li>)}</ol></>}
+      {/* A one-rep max means nothing for a plank, a kegel or a prenatal cat-cow. */}
+      {!isCardio(ex) && !ex.hold && !exSections(ex).length && <OneRM ex={ex} />}
+      {instrFor(ex).length > 0 &&<><h4 className="sec">{t('How to')}{!INSTR_LANGS.includes(getLang()) && !hasOwnTranslation(ex) && <span className="dim" style={{ textTransform: 'none', letterSpacing: 0 }}> · {t('instructions in English')}</span>}</h4><ol className="steps-list">{instrFor(ex).map((s, i) => <li key={i}>{s}</li>)}</ol></>}
     </>}
   </>
 }
@@ -706,7 +709,7 @@ function ExConfig({ ex, existing, onSave, onDelete, close, routine }) {
       {cardio && <span className="tag acc"><Icon name="figureRun" />{t('Cardio')}</span>}
       <span className="tag">{t(ex.tg || ex.bp)}</span><span className="tag">{t(ex.eq)}</span>
     </div>
-    {ex.desc && <div className="exnote">{ex.desc}</div>}
+    {descFor(ex) && <div className="exnote">{descFor(ex)}</div>}
     {!cardio && <div style={{ marginBottom: 14 }}>
       <Segmented className="seg-range" value={mode} onChange={setMode}
         options={[{ value: 'reps', label: t('Reps') }, { value: 'time', label: t('Time') }]} />

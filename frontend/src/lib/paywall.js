@@ -31,6 +31,11 @@ export const FREE_EXERCISE_IDS = new Set([
   '1459', // dumbbell romanian deadlift
   '1372', // barbell standing calf raise
   '0739', // sled 45° leg press
+  // One free taste of each Loadout-written section (lib/extra-exercises.js); the rest of each
+  // section is Premium like the rest of the catalogue.
+  'x101', // front plank
+  'x201', // kegel contraction
+  'x301', // cat-cow
 ])
 
 // Only the paid build gates anything — everywhere else every exercise is free, same as upstream.

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useStore } from '../store/useStore.js'
 import { EXDB, BODYPARTS, allExercises, equipmentOf, isHomeFriendly, YOUTUBE_MEDIA } from '../lib/exercises.js'
 import { bestWeightFor } from '../lib/history.js'
@@ -7,26 +8,34 @@ import { t } from '../lib/i18n.js'
 import { Thumb } from '../components/Media.jsx'
 import { exerciseDetailSheet, addToRoutineSheet, customExSheet, paywallSheet } from '../sheets.jsx'
 import { isLocked } from '../lib/paywall.js'
+import { SECTIONS, SECTION_OF_FOCUS, exSections } from '../lib/extra-exercises.js'
+import { SPECIAL_SESSIONS } from '../lib/quick-sessions.js'
+import SectionNotice from '../components/SectionNotice.jsx'
 import Icon from '../components/Icon.jsx'
 import { Button, Segmented } from '../components/ui.jsx'
 import HelpTip from '../components/HelpTip.jsx'
 
 export default function Library() {
+  const nav = useNavigate()
   const S = useStore(s => s.S)
   const update = useStore(s => s.update)
   useStore(s => s.premium) // re-render when Loadout Premium status changes (lib/paywall.js isLocked)
   const [q, setQ] = useState('')
   const [bp, setBp] = useState('')
   const [eq, setEq] = useState('')
+  const [sec, setSec] = useState('')
   const [shown, setShown] = useState(40)
   const ql = q.toLowerCase().trim()
   const atHome = S.place === 'home'
   const all = allExercises(S)
-  const base = all.filter(e => (!bp || e.bp === bp) && (!atHome || isHomeFriendly(e)) && (!ql || e.n.toLowerCase().includes(ql) || e.tg.includes(ql) || e.eq.includes(ql) || (e.desc || '').toLowerCase().includes(ql)))
+  const base = all.filter(e => (!bp || e.bp === bp) && (!sec || exSections(e).includes(sec)) && (!atHome || isHomeFriendly(e)) && (!ql || e.n.toLowerCase().includes(ql) || e.tg.includes(ql) || e.eq.includes(ql) || (e.desc || '').toLowerCase().includes(ql)))
   const eqOpts = equipmentOf(base)
   // Drop the equipment filter if the search narrowed it away, so you never hit a dead end.
   const eqOn = eqOpts.includes(eq) ? eq : ''
   const f = eqOn ? base.filter(e => e.eq === eqOn) : base
+  // The guided videos of the open section, one tap away from its exercises.
+  const secFocus = Object.keys(SECTION_OF_FOCUS).find(k => SECTION_OF_FOCUS[k] === sec)
+  const secSessions = secFocus ? SPECIAL_SESSIONS.filter(s => s.focus === secFocus) : []
 
   return <>
     <div className="hdr"><div><h1>{t('Exercises')}</h1><div className="sub">{t(YOUTUBE_MEDIA ? '{0} exercises with YouTube demos' : '{0} exercises with animations', atHome ? all.filter(isHomeFriendly).length : EXDB.length)}</div></div></div>
@@ -36,6 +45,19 @@ export default function Library() {
       value={S.place} onChange={v => update(s => { s.place = v })} /></div>
     <div className="search" style={{ marginBottom: 10 }}><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
       <input className="input" placeholder={t('Search…')} value={q} onChange={e => { setQ(e.target.value); setShown(40) }} /></div>
+    {/* Collections cut across body parts (a plank, a kegel and a prenatal cat-cow share none),
+        so they get their own row and combine with the filters below. */}
+    <div className="chips" style={{ marginBottom: 8 }}>
+      {SECTIONS.map(x => <button key={x.key} className={'chip nocap' + (sec === x.key ? ' on' : '')} onClick={() => { setSec(sec === x.key ? '' : x.key); setEq(''); setShown(40) }}>{t(x.label)}</button>)}
+    </div>
+    <SectionNotice sec={sec} />
+    {secSessions.length > 0 && <div className="list" style={{ marginBottom: 12 }}>
+      <div className="item" onClick={() => nav('/quick-sessions?group=special&focus=' + encodeURIComponent(secFocus))}>
+        <span className="lrow-i"><Icon name="play" /></span>
+        <div className="grow"><div className="tt">{t('Specialized sessions')}</div><div className="ss">{t('{0} follow-along videos', secSessions.length)}</div></div>
+        <Icon name="chevronRight" className="chev" />
+      </div>
+    </div>}
     <div className="chips" style={{ marginBottom: eqOpts.length > 1 ? 8 : 12 }}>
       <button className={'chip nocap' + (!bp ? ' on' : '')} onClick={() => { setBp(''); setEq(''); setShown(40) }}>{t('All')}</button>
       {BODYPARTS.map(b => <button key={b} className={'chip' + (bp === b ? ' on' : '')} onClick={() => { setBp(b); setEq(''); setShown(40) }}>{t(b)}</button>)}

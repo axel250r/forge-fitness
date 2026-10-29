@@ -12,7 +12,7 @@ import Media from '../components/Media.jsx'
 import { startFlow, exercisePicker, exConfigSheet, exerciseDetailSheet, topWeightSheet, finishWorkout, workoutCompleteSheet, confirmSheet, plateCalcSheet, paywallSheet } from '../sheets.jsx'
 import { isPlateLoaded } from '../lib/plates.js'
 import { isLocked } from '../lib/paywall.js'
-import { QUICK_SESSIONS } from '../lib/quick-sessions.js'
+import { QUICK_SESSIONS, SPECIAL_SESSIONS } from '../lib/quick-sessions.js'
 import Icon from '../components/Icon.jsx'
 import { Button, Check, NumberField } from '../components/ui.jsx'
 import { nextPrescription, applyPrescription } from '../lib/progression.js'
@@ -42,12 +42,17 @@ function StartChooser() {
         <span className="lrow-i"><Icon name={glyphOf(r.emoji)} /></span>
         <div className="grow"><div className="tt">{r.name}</div><div className="ss">{exCount(r.ex.length)}</div></div>
         <span className="tag acc">{t('Start')}</span></div>)}</div></>}
-    {QUICK_SESSIONS.length > 0 && <div className="list" style={{ marginTop: 22 }}>
-      <div className="item" onClick={() => nav('/quick-sessions')}>
+    {(QUICK_SESSIONS.length > 0 || SPECIAL_SESSIONS.length > 0) && <div className="list" style={{ marginTop: 22 }}>
+      {QUICK_SESSIONS.length > 0 && <div className="item" onClick={() => nav('/quick-sessions')}>
         <span className="lrow-i"><Icon name="timer" /></span>
         <div className="grow"><div className="tt">{t('Short on time')}</div><div className="ss">{t('{0} full workouts, one video each', QUICK_SESSIONS.length)}</div></div>
         <Icon name="chevronRight" className="chev" />
-      </div>
+      </div>}
+      {SPECIAL_SESSIONS.length > 0 && <div className="item" onClick={() => nav('/quick-sessions?group=special')}>
+        <span className="lrow-i"><Icon name="heart" /></span>
+        <div className="grow"><div className="tt">{t('Specialized sessions')}</div><div className="ss">{t('{0} videos: isometric, pelvic floor and pregnancy', SPECIAL_SESSIONS.length)}</div></div>
+        <Icon name="chevronRight" className="chev" />
+      </div>}
     </div>}
     <div style={{ height: 14 }} />
     <Button icon="shuffle" onClick={() => startFlow(null)}>{t('Freestyle workout (pick as you go)')}</Button>
