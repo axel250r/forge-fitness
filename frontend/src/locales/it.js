@@ -639,4 +639,5 @@ export default {
   "{0} follow-along videos": "{0} video da seguire",
   "{0} videos: isometric, pelvic floor and pregnancy": "{0} video: isometrici, pavimento pelvico e gravidanza",
   "Follow-along videos for isometric holds, pelvic floor and pregnancy. Each one opens straight in YouTube.": "Video da seguire per esercizi isometrici, pavimento pelvico e gravidanza. Ognuno si apre direttamente su YouTube.",
+  "1 week streak": "serie di 1 settimana",
 }

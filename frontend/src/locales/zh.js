@@ -639,4 +639,5 @@ export default {
   "{0} follow-along videos": "{0} 个跟练视频",
   "{0} videos: isometric, pelvic floor and pregnancy": "{0} 个视频：等长训练、盆底肌和孕期",
   "Follow-along videos for isometric holds, pelvic floor and pregnancy. Each one opens straight in YouTube.": "等长训练、盆底肌和孕期的跟练视频。每个都会直接在 YouTube 中打开。",
+  "1 week streak": "连续 1 周",
 }

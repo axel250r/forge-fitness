@@ -639,4 +639,5 @@ export default {
   "{0} follow-along videos": "{0} takip edilebilir video",
   "{0} videos: isometric, pelvic floor and pregnancy": "{0} video: izometrik, pelvik taban ve hamilelik",
   "Follow-along videos for isometric holds, pelvic floor and pregnancy. Each one opens straight in YouTube.": "İzometrik tutuşlar, pelvik taban ve hamilelik için takip edilebilir videolar. Her biri doğrudan YouTube’da açılır.",
+  "1 week streak": "1 haftalık seri",
 }

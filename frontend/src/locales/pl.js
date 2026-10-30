@@ -639,4 +639,5 @@ export default {
   "{0} follow-along videos": "Filmy do ćwiczeń: {0}",
   "{0} videos: isometric, pelvic floor and pregnancy": "Filmy: {0} — izometria, dno miednicy i ciąża",
   "Follow-along videos for isometric holds, pelvic floor and pregnancy. Each one opens straight in YouTube.": "Filmy do ćwiczeń razem z trenerem: pozycje izometryczne, dno miednicy i ciąża. Każdy otwiera się od razu w YouTube.",
+  "1 week streak": "seria 1 tyg.",
 }

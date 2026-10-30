@@ -639,4 +639,5 @@ export default {
   "{0} follow-along videos": "따라 하는 영상 {0}개",
   "{0} videos: isometric, pelvic floor and pregnancy": "영상 {0}개: 등척성, 골반저근, 임신",
   "Follow-along videos for isometric holds, pelvic floor and pregnancy. Each one opens straight in YouTube.": "등척성 유지, 골반저근, 임신을 위한 따라 하기 영상입니다. 각 영상은 YouTube에서 바로 열립니다.",
+  "1 week streak": "1주 연속",
 }

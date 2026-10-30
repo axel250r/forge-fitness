@@ -639,4 +639,5 @@ export default {
   "{0} follow-along videos": "Видео для занятий: {0}",
   "{0} videos: isometric, pelvic floor and pregnancy": "Видео: {0} — изометрика, тазовое дно и беременность",
   "Follow-along videos for isometric holds, pelvic floor and pregnancy. Each one opens straight in YouTube.": "Видео для занятий: изометрические упражнения, тазовое дно и беременность. Каждое открывается сразу в YouTube.",
+  "1 week streak": "серия: 1 нед.",
 }

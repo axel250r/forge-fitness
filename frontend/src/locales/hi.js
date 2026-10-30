@@ -639,4 +639,5 @@ export default {
   "{0} follow-along videos": "{0} फॉलो-अलोंग वीडियो",
   "{0} videos: isometric, pelvic floor and pregnancy": "{0} वीडियो: आइसोमेट्रिक, पेल्विक फ्लोर और गर्भावस्था",
   "Follow-along videos for isometric holds, pelvic floor and pregnancy. Each one opens straight in YouTube.": "आइसोमेट्रिक होल्ड, पेल्विक फ्लोर और गर्भावस्था के लिए साथ-साथ करने वाले वीडियो। हर वीडियो सीधे YouTube में खुलता है।",
+  "1 week streak": "1 हफ़्ते की स्ट्रीक",
 }
