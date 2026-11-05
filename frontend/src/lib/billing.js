@@ -26,32 +26,115 @@ const AVAILABLE = typeof window !== 'undefined' && !!window.CdvPurchase
 
 let owned = false
 let ready = false
-let price = null
+let plans = null
+
+// One Play product, two base plans: the monthly one (with a 7-day free-trial offer) and the
+// yearly one (same trial offer). The plugin names every offer "<product>@<basePlan>" or
+// "<product>@<basePlan>@<offerId>", so the base plan is the second segment.
+export const PLAN_MONTHLY = 'monthly'
+export const PLAN_YEARLY = 'yearly'
+export const planOf = offer => String(offer?.id || '').split('@')[1] || null
+
+// Second safety net on top of the base-plan id: the renewing phase's real billing period, as Play
+// reports it (ISO 8601). An offer only counts for a plan when that period matches, so a base plan
+// misconfigured in Play Console (say "yearly" set to renew monthly) is never shown under the
+// wrong label nor sold as the wrong plan. Offers that report no period are let through, as before.
+const PERIODS = { [PLAN_MONTHLY]: ['P1M'], [PLAN_YEARLY]: ['P1Y', 'P12M'] }
+const renewingPhase = offer => [...(offer?.pricingPhases || [])].reverse().find(p => p.paymentMode !== 'FreeTrial')
+const periodOk = (offer, plan) => {
+  const period = renewingPhase(offer)?.billingPeriod
+  return !period || PERIODS[plan].includes(period)
+}
+const offersOf = (product, plan) => (product?.offers || []).filter(o => planOf(o) === plan && periodOk(o, plan))
+// Fallback pool for the monthly side when no offer carries the "monthly" base-plan id (an older
+// product shape): every offer EXCEPT the yearly ones (by id or by period), so a monthly price or
+// purchase can never land on the yearly plan.
+const nonYearlyOffers = product => (product?.offers || []).filter(o => planOf(o) !== PLAN_YEARLY && periodOk(o, PLAN_MONTHLY))
+const hasTrial = offer => !!offer?.pricingPhases?.some(p => p.paymentMode === 'FreeTrial')
 
 // The price shown in the paywall is the ongoing, post-trial price — never a free-trial phase's
 // $0, which product.pricing (offers[0].pricingPhases[0]) could easily land on the moment a free
-// trial offer exists, since Play doesn't guarantee offer order. Walks every offer looking for a
-// non-trial phase; same "$4.990"/"$5.25"-style live, store-localized string either way.
-function recurringPrice(product) {
-  for (const offer of product?.offers || []) {
-    const phase = offer.pricingPhases?.find(p => p.paymentMode !== 'FreeTrial')
-    if (phase) return phase.price
+// trial offer exists, since Play doesn't guarantee offer order. Takes the last non-trial phase
+// of the plan's offers: the one that keeps renewing. Same "$4.990"/"$5.25"-style live,
+// store-localized string either way; `micros` and `currency` feed the yearly-savings math.
+export function recurringPhase(product, plan) {
+  for (const offer of offersOf(product, plan)) {
+    const phase = summary(renewingPhase(offer))
+    if (phase) return phase
   }
-  return product?.pricing?.price || null
+  return null
 }
+const summary = phase => phase ? { price: phase.price, micros: phase.priceMicros || 0, currency: phase.currency || null } : null
+
+// { monthly, yearly } — each a phase summary or null while Play hasn't reported that plan (the
+// yearly plan only shows up once it's active in Play Console). If no offer carries the monthly
+// base-plan id, the monthly price is read off the very offer purchase('monthly') would order,
+// so the label and the charge can't disagree.
+export function planPrices(product) {
+  const monthly = recurringPhase(product, PLAN_MONTHLY) || summary(renewingPhase(pickOffer(product, PLAN_MONTHLY)))
+  return { monthly, yearly: recurringPhase(product, PLAN_YEARLY) }
+}
+
+// Whole-percent saving of paying yearly vs twelve months, or null when either price is
+// unknown (micros 0) or the yearly plan isn't actually cheaper.
+export function yearlySavingsPercent(plans) {
+  const m = plans?.monthly?.micros, y = plans?.yearly?.micros
+  if (!m || !y) return null
+  const pct = Math.round((1 - y / (m * 12)) * 100)
+  return pct > 0 ? pct : null
+}
+
+// Writes `value` in the same shape as a store-formatted price: same symbol and its position,
+// same thousands and decimal separators, same number of decimals. "$34.990" + 2915.83 →
+// "$2.916"; "R549,00" + 45.75 → "R45,75". A last group of exactly three digits is read as
+// thousands, never decimals (no Play currency shows three decimals). Null if no number is found.
+export function formatLike(sample, value) {
+  const m = String(sample || '').match(/\d(?:[\d.,\s  ]*\d)?/)
+  if (!m) return null
+  const num = m[0]
+  const dec = num.match(/([.,])(\d{1,2})$/)
+  const decimals = dec ? dec[2].length : 0
+  const intPart = dec ? num.slice(0, -dec[0].length) : num
+  const group = (intPart.match(/[.,\s  ]/) || [''])[0]
+  const [i, f] = Math.abs(value).toFixed(decimals).split('.')
+  const grouped = group ? i.replace(/\B(?=(\d{3})+(?!\d))/g, group) : i
+  return sample.replace(num, f ? grouped + dec[1] + f : grouped)
+}
+
+// Yearly price spread over twelve months, written like Play writes the yearly price ("$2.916").
+export function yearlyPerMonth(plans) {
+  const y = plans?.yearly
+  if (!y?.micros || !y.price) return null
+  return formatLike(y.price, y.micros / 1e6 / 12)
+}
+
+// The offer to buy for a plan: the one with a free-trial phase when Play offers it (Play doesn't
+// guarantee offer order, so a trial offer could otherwise end up ignored half the time), else the
+// plain base plan. Each plan only ever buys its own offers: yearly never falls back to monthly,
+// and monthly's fallback (older product shape without base-plan ids) skips every yearly offer.
+export function pickOffer(product, plan) {
+  const offers = offersOf(product, plan)
+  const found = offers.find(hasTrial) || offers.find(o => String(o.id).split('@').length === 2) || offers[0]
+  if (found) return found
+  if (plan !== PLAN_MONTHLY) return null
+  const pool = nonYearlyOffers(product)
+  return pool.find(hasTrial) || pool[0] || null
+}
+
+const samePlans = (a, b) => JSON.stringify(a) === JSON.stringify(b)
 
 function refreshOwned(onChange) {
   const { store } = window.CdvPurchase
   const product = store.get(PRODUCT_ID)
   const next = !!product?.owned
-  const nextPrice = recurringPrice(product)
-  if (next === owned && nextPrice === price) return
+  const nextPlans = planPrices(product)
+  if (next === owned && samePlans(nextPlans, plans)) return
   owned = next
-  price = nextPrice
-  onChange(owned, price)
+  plans = nextPlans
+  onChange(owned, plans)
 }
 
-// Call once at boot. `onChange(owned, price)` fires every time subscription status or the
+// Call once at boot. `onChange(owned, plans)` fires every time subscription status or the
 // product's pricing info changes — the caller (useStore) mirrors both into store state so
 // isLocked/isFreeExercise (lib/paywall.js) and the UI react to it.
 // Returns a promise so boot() can wait for the initial owned-state query — otherwise the app
@@ -81,16 +164,10 @@ export function initBilling(onChange) {
 // Starts the native purchase flow (shows Google's own payment sheet). Resolves once the flow
 // closes — check `owned`/the store's premium field afterward rather than trusting the resolve
 // alone, since a user can back out without an error being thrown.
-export function purchase() {
+export function purchase(plan = PLAN_MONTHLY) {
   if (!AVAILABLE) return Promise.reject(new Error('Billing not available on this build'))
   const { store } = window.CdvPurchase
-  const product = store.get(PRODUCT_ID)
-  // Play doesn't guarantee offer order (product.getOffer() with no id is just offers[0]), so a
-  // free-trial offer configured in Play Console's Monetization section could otherwise end up
-  // ignored half the time. Prefer whichever offer actually has a FreeTrial pricing phase —
-  // falls back to the default offer for anyone Play doesn't consider trial-eligible (e.g. a
-  // past subscriber), same as before this existed.
-  const offer = product?.offers?.find(o => o.pricingPhases?.some(p => p.paymentMode === 'FreeTrial')) || product?.getOffer()
+  const offer = pickOffer(store.get(PRODUCT_ID), plan)
   if (!offer) return Promise.reject(new Error('Subscription offer not loaded yet'))
   return store.order(offer)
 }

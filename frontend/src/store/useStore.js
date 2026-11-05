@@ -101,6 +101,7 @@ export const useStore = create((set, get) => {
     premium: false,
     // Store-localized subscription price (e.g. "$4.990"), null until Play Billing reports it.
     premiumPrice: null,
+    premiumPlans: null,   // { monthly, yearly } price summaries from lib/billing.js (yearly null until live in Play)
 
     // Mutate a draft of S via producer fn, then persist + schedule sync.
     update(mut, push = true) {
@@ -179,9 +180,9 @@ export const useStore = create((set, get) => {
         // Runs alongside nativeLoad() below rather than blocking on it — but `ready` still
         // waits (capped) for this, so an already-subscribed person's first frame doesn't flash
         // locked/paywalled content just because Play Billing's initial query hasn't landed yet.
-        const billingReady = initBilling((owned, price) => {
+        const billingReady = initBilling((owned, plans) => {
           billingOwned = owned
-          set({ premium: owned || !!get().S.giftPremium, premiumPrice: price })
+          set({ premium: owned || !!get().S.giftPremium, premiumPrice: plans?.monthly?.price || null, premiumPlans: plans })
         })
         const saved = await nativeLoad()
         const S = get().S

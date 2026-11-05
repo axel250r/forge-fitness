@@ -10,7 +10,7 @@ import { exSections, PRENATAL_SHORT } from './lib/extra-exercises.js'
 import { nav } from './lib/nav.js'
 import { starterRoutines, STARTER_PLANS } from './lib/starter.js'
 import { isLocked, isStarterPlanLocked } from './lib/paywall.js'
-import { purchase, restorePurchases, isBillingAvailable, FALLBACK_PRICE } from './lib/billing.js'
+import { purchase, restorePurchases, isBillingAvailable, FALLBACK_PRICE, PLAN_MONTHLY, PLAN_YEARLY, yearlySavingsPercent, yearlyPerMonth } from './lib/billing.js'
 import { platesFor, DEFAULT_BAR } from './lib/plates.js'
 import Media, { Thumb } from './components/Media.jsx'
 import Stepper from './components/Stepper.jsx'
@@ -81,6 +81,14 @@ function Paywall({ close }) {
   const [busy, setBusy] = useState(false)
   const premium = useStore(s => s.premium)
   const price = useStore(s => s.premiumPrice) || FALLBACK_PRICE
+  const plans = useStore(s => s.premiumPlans)
+  // The yearly option only exists once Play reports that base plan; until then (and on any
+  // device where it never shows up) the paywall is exactly the single monthly button it was.
+  const yearlyPrice = plans?.yearly?.price || null
+  const [plan, setPlan] = useState(PLAN_YEARLY)
+  const chosen = yearlyPrice ? plan : PLAN_MONTHLY
+  const savings = yearlySavingsPercent(plans)
+  const perMonth = yearlyPerMonth(plans)
   // Which action we're waiting on billing to confirm, if any. Play Billing confirms a
   // purchase/restore through an async "productUpdated" event that can land a beat *after*
   // purchase()/restorePurchases() already resolved — checking `premium` synchronously right
@@ -114,7 +122,7 @@ function Paywall({ close }) {
     setBusy(true)
     pending.current = 'subscribe'
     try {
-      await purchase()
+      await purchase(chosen)
       // Resolves once the native payment sheet closes either way (including a plain cancel,
       // which cordova-plugin-purchase resolves rather than rejects) — the effect above is what
       // actually confirms success, once `premium` flips. Nothing to do here on a quiet cancel.
@@ -156,8 +164,19 @@ function Paywall({ close }) {
         {t('Full access to the 1,324-exercise library with video demos, every starter plan, and everything still to come.')}
       </div>
     </div>
+    {yearlyPrice && <div className="plan-opts" role="radiogroup" aria-label={t('Plan')}>
+      <button role="radio" aria-checked={chosen === PLAN_YEARLY} className={'plan-opt' + (chosen === PLAN_YEARLY ? ' on' : '')} disabled={busy} onClick={() => setPlan(PLAN_YEARLY)}>
+        <span className="plan-name">{t('Yearly')}{savings && <span className="tag acc nocap">{t('Save {0}%', savings)}</span>}</span>
+        <span className="plan-price">{t('{0}/year', yearlyPrice)}</span>
+        {perMonth && <span className="plan-sub">{t('About {0}/month', perMonth)}</span>}
+      </button>
+      <button role="radio" aria-checked={chosen === PLAN_MONTHLY} className={'plan-opt' + (chosen === PLAN_MONTHLY ? ' on' : '')} disabled={busy} onClick={() => setPlan(PLAN_MONTHLY)}>
+        <span className="plan-name">{t('Monthly')}</span>
+        <span className="plan-price">{t('{0}/month', price)}</span>
+      </button>
+    </div>}
     <Button variant="primary" icon="crown" disabled={busy} onClick={subscribe}>
-      {busy ? t('Processing…') : t('Subscribe — {0}/month', price)}
+      {busy ? t('Processing…') : chosen === PLAN_YEARLY ? t('Subscribe — {0}/year', yearlyPrice) : t('Subscribe — {0}/month', price)}
     </Button>
     <div style={{ height: 8 }} />
     <Button variant="ghost" className="dim" disabled={busy} onClick={close}>{t('Maybe later')}</Button>
