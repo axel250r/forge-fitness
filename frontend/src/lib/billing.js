@@ -151,7 +151,13 @@ export function initBilling(onChange) {
     // "approved" — finish() closes it out immediately rather than calling verify() against a
     // validation server we don't run.
     .approved(transaction => transaction.finish())
+    // Ownership changes arrive as receipt updates, not product updates: listening to
+    // productUpdated alone left a just-paid subscriber looking at the paywall until the app
+    // restarted (found in a real test purchase, Nov 2026). Both feed the same idempotent
+    // refresh; finished covers the moment the purchase is acknowledged.
     .productUpdated(() => refreshOwned(onChange))
+    .receiptUpdated(() => refreshOwned(onChange))
+    .finished(() => refreshOwned(onChange))
 
   store.error(err => console.error('[billing]', err.message || err))
 
