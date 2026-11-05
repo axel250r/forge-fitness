@@ -368,8 +368,11 @@ h4.sec{
   background:var(--surface);color:var(--label);border:1.5px solid transparent;
 }
 .plan-opt.on{border-color:var(--acc);background:var(--acc-soft)}
-.plan-name{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600}
-.plan-price{font-size:15px;font-weight:600;text-align:right}
+/* The savings tag never splits mid-phrase ("Ahorra / 42%"): when the price is long (e.g.
+   "CLP 34,990/año" on an English-locale phone) the whole tag drops under the plan name instead. */
+.plan-name{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:15px;font-weight:600}
+.plan-name .tag{white-space:nowrap}
+.plan-price{font-size:15px;font-weight:600;text-align:right;white-space:nowrap}
 .plan-sub{grid-column:1 / -1;font-size:12px;color:var(--label-2)}
 
 /* ---------------------------------------------------------------- chips -- */
