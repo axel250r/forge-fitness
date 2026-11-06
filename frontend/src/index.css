@@ -57,8 +57,11 @@
   --ease:cubic-bezier(.32,.72,0,1);
   --fast:140ms; --med:220ms;
 
-  --sab:env(safe-area-inset-bottom,0px);
-  --sat:env(safe-area-inset-top,0px);
+  /* System bar space. On Android the native shell measures the bars and sets --nsat/--nsab
+     (MainActivity.java): older WebViews report env(safe-area-inset-*) as 0 there. Everywhere
+     else (iOS, browsers) env() is the source. */
+  --sab:var(--nsab, env(safe-area-inset-bottom,0px));
+  --sat:var(--nsat, env(safe-area-inset-top,0px));
 }
 
 :root[data-theme="light"] {

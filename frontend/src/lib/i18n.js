@@ -19,10 +19,14 @@ const DATE_LOCALES = {
 
 const localePacks = import.meta.glob('../locales/*.js')
 const instrPacks = import.meta.glob('../instr/*.js')
+// Translations of VigorUp's own exercises (lib/extra-exercises.js) for every language except
+// English (the source) and Spanish (kept inline in ex.i18n.es), one lazy file per language.
+const extraPacks = import.meta.glob('../extra-i18n/*.js')
 
 let lang = 'en'
 let dict = {}
 let instr = null            // { exId: [steps] } for the current language, null = English
+let extra = null            // { exId: { st, desc } } for VigorUp's own exercises, null = none
 let version = 0
 const subs = new Set()
 const notify = () => { version++; subs.forEach(f => f()) }
@@ -37,11 +41,12 @@ export function t(s, ...args) {
   return v
 }
 // Instructions for an exercise in the current language (English steps as fallback). An
-// exercise VigorUp wrote itself carries its own translations in ex.i18n (lib/extra-exercises.js)
-// instead of living in the generated packs.
-export const hasOwnTranslation = ex => !!(ex.i18n && ex.i18n[lang])
-export const instrFor = ex => (instr && instr[ex.id]) || (ex.i18n && ex.i18n[lang] && ex.i18n[lang].st) || ex.st || []
-export const descFor = ex => (ex.i18n && ex.i18n[lang] && ex.i18n[lang].desc) || ex.desc || ''
+// exercise VigorUp wrote itself carries Spanish inline in ex.i18n (lib/extra-exercises.js) and
+// the other languages in src/extra-i18n/, instead of living in the generated packs.
+const ownFor = ex => (extra && extra[ex.id]) || (ex.i18n && ex.i18n[lang]) || null
+export const hasOwnTranslation = ex => !!ownFor(ex)
+export const instrFor = ex => (instr && instr[ex.id]) || ownFor(ex)?.st || ex.st || []
+export const descFor = ex => ownFor(ex)?.desc || ex.desc || ''
 
 export async function setLang(l) {
   if (!LANGS[l]) l = 'en'
@@ -51,6 +56,10 @@ export async function setLang(l) {
     dict = l === 'en' ? {} : (await localePacks['../locales/' + l + '.js']()).default
     instr = l === 'en' || !INSTR_LANGS.includes(l) ? null : (await instrPacks['../instr/' + l + '.js']()).default
   } catch (e) { dict = {}; instr = null }
+  try {
+    const pack = extraPacks['../extra-i18n/' + l + '.js']
+    extra = pack ? (await pack()).default : null
+  } catch (e) { extra = null }
   notify()
 }
 
